@@ -4,7 +4,7 @@ A digital scandoubler and HDMI output card for the **Amiga 4000**, with **Amiga 
 
 The card plugs into the video slot, taps the digital RGB signals before they ever reach a DAC, and outputs clean **1080p HDMI** with audio. No analogue stage, no capture artefacts, no flicker.
 
-> This project is a big-box adaptation of [**jbilander/BeamBender**](https://github.com/jbilander/BeamBender), Jörgen Bilander's  scandoubler for the Amiga 1200 (and 500). The original design's approach and much of its analogue and HDMI circuitry carry over directly. Jörgen has also provided hardware guidance throughout this redesign. All credit for the concept belongs upstream; mistakes here are mine.
+> This project is a big-box adaptation of [**jbilander/BeamBender**](https://github.com/jbilander/BeamBender), Jörgen Bilander's  scandoubler for the Amiga 1200 (and 500). The original design's approach and much of its analogue and HDMI circuitry carry over directly. Jörgen has also provided hardware guidance throughout this redesign. All credit for the concept belongs upstream.
 
 ---
 
@@ -51,7 +51,7 @@ Buy the **module and the dev board together**. The BigBox card programs the modu
 
 ## Clock architecture
 
-Four clock inputs, on four dedicated ECP5 primary-clock pins. This is the fiddliest part of the design and worth understanding before modifying anything.
+Four clock inputs, on four dedicated ECP5 primary-clock pins.
 
 | Clock | Source | ECP5 pin | PLL |
 |---|---|---|---|
@@ -72,9 +72,9 @@ The two clocks that need PLLs sit on opposite die edges (banks 7 and 3), so each
 
 ## Amiga 2000 / 3000 support
 
-The pre-AGA video slot carries **12-bit colour** (RGB444) rather than AGA's 24. Each nibble is replicated into both halves of an 8-bit channel, which is multiplication by 17. That maps 0 to 0 and 15 to 255 with no rounding error at any level.
+The pre-AGA video slot carries **12-bit color** (RGB444) rather than AGA's 24. Each nibble is replicated into both halves of an 8-bit channel, which is multiplication by 17. That maps 0 to 0 and 15 to 255 with no rounding error at any level.
 
-Machine detection is passive. The AGA video slot extends the connector with pins 43 to 54, which don't exist at all on the A2000 and A3000. Pins 43 and 44 are ground, and 45 to 54 carry the extra colour bits. A 10 kΩ pull-up on pin 43 therefore reads low on an A4000 and high everywhere else. The ten colour lines on pins 45 to 54 get 100 kΩ pull-downs so their buffer inputs never float on a machine where those pins are absent.
+Machine detection is passive. The AGA video slot extends the connector with pins 43 to 54, which don't exist at all on the A2000 and A3000. Pins 43 and 44 are ground, and 45 to 54 carry the extra color bits. A 10 kΩ pull-up on pin 43 therefore reads low on an A4000 and high everywhere else. The ten color lines on pins 45 to 54 get 100 kΩ pull-downs so their buffer inputs never float on a machine where those pins are absent.
 
 ---
 
@@ -122,12 +122,11 @@ When that time comes, the PCB is designed around **JLCPCB** fabrication and asse
 ## Credits
 
 - **[Jörgen Bilander](https://github.com/jbilander)**, original BeamBender design, and ongoing guidance on this adaptation
-- **Salih Albayrak** (aka Kavanoz), hardware design and implementation for BigBox
+- **[Salih Albayrak (aka Kavanoz)](https://github.com/kavanoz64)**, hardware design and implementation for BigBox
 - **[Stefan Reinauer](https://github.com/reinauer)**, FPGA programming (planned)
 - **Claude AI** (Anthropic), design review, component selection and documentation
 - **[wuxx](https://github.com/wuxx/Colorlight-FPGA-Projects)** and the Colorlight reverse-engineering community, for module pinouts and documentation that the vendor doesn't publish
-- The Amiga hardware documentation community, for video slot pinouts older than a lot of the people using them
 
 ## License
 
-See `LICENSE`. Please check the licensing of the upstream [BeamBender](https://github.com/jbilander/BeamBender) project before redistributing derived work.
+Please check the licensing of the upstream [BeamBender](https://github.com/jbilander/BeamBender) project before redistributing derived work.
