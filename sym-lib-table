@@ -1,0 +1,4 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "BeamBenderSymbols") (type "KiCad") (uri "${KIPRJMOD}/BeamBenderSymbols.kicad_sym") (options "") (descr ""))
+)

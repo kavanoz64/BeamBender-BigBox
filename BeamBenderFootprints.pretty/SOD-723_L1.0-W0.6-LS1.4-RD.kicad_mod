@@ -1,0 +1,238 @@
+(footprint "SOD-723_L1.0-W0.6-LS1.4-RD"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "D1"
+		(at -2.31 0.05 0)
+		(layer "F.SilkS")
+		(uuid "b3c94373-eebe-49cc-91cb-ab006726fe97")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "SP1003-01DTG"
+		(at 0 4 0)
+		(layer "F.Fab")
+		(uuid "acc3bd7a-f9d9-4f7d-8601-e88c4606e788")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://www.littelfuse.com/assetdocs/littelfuse_tvs_diode_array_sp1003_datasheet.pdf?assetguid=12e91f0b-9a70-47f1-8c30-51aa42e84dd5"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c78ac336-5486-4f57-b7a6-bfea5f5b9725")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" "12V (Typ) Clamp 7A (8/20µs) IPP TVS Diode"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "8ff4f418-37ef-4114-a099-a9490d465be7")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Part Number" "SP1003-01DTG"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c267dbe3-97be-4960-92dd-9d5a725efad2")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "LCSC" "C126834"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "b8f357cc-5bce-45d9-a5d7-462ee133fc16")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(sheetname "/")
+	(sheetfile "BeamBender-BigBox.kicad_sch")
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -1.2 -0.3)
+		(end -1.1 -0.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e5c4cae0-4f5c-4a5f-ae9d-5223abb6ec6e")
+	)
+	(fp_line
+		(start -1.2 0.3)
+		(end -1.2 -0.3)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c8f65d61-514e-4275-8866-358c85171fde")
+	)
+	(fp_line
+		(start -1.1 -0.4)
+		(end 1.2 -0.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e50efb87-c347-4359-aaba-c919f713fc6c")
+	)
+	(fp_line
+		(start -1.1 0.4)
+		(end -1.2 0.3)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "8533d069-25a2-42cb-b573-318c5c5586c4")
+	)
+	(fp_line
+		(start 1.2 -0.4)
+		(end 1.2 0.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "34e62668-084a-4922-83f6-5f1d8206cf1f")
+	)
+	(fp_line
+		(start 1.2 0.4)
+		(end -1.1 0.4)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "28d336a4-8fee-480d-b17c-7eac47e95851")
+	)
+	(fp_circle
+		(center -0.7 0.3)
+		(end -0.67 0.3)
+		(stroke
+			(width 0.06)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "64a084a4-7f7c-46a3-ab49-9b18e04d7871")
+	)
+	(fp_poly
+		(pts
+			(xy -1.45001 -0.250012) (xy -1.35001 -0.250012) (xy -1.35001 0.249987) (xy -1.45001 0.249987) (xy -1.45001 -0.250012)
+		)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "08de4318-b522-4e42-9b92-882eaeba1dc0")
+	)
+	(fp_line
+		(start -0.5 -0.3)
+		(end 0.5 -0.3)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "4dece250-0c80-4c2f-b1c0-bdaacb25a7fd")
+	)
+	(fp_line
+		(start -0.5 0.3)
+		(end -0.5 -0.3)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f5d810c2-6ec9-480f-ac3d-95a02f0d83c1")
+	)
+	(fp_line
+		(start 0.5 -0.3)
+		(end 0.5 0.3)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "5c9c9ca9-67d1-4ba0-840e-168134b23973")
+	)
+	(fp_line
+		(start 0.5 0.3)
+		(end -0.5 0.3)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "39c0192d-23d2-4297-a21a-ae1ee7a2f577")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "8e077011-d48e-4644-8b1c-046861e2ae3a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -0.58 0 180)
+		(size 0.83 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "41e05179-1e58-4666-813d-856c2097794a")
+	)
+	(pad "2" smd rect
+		(at 0.58 0 180)
+		(size 0.83 0.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "04e65233-fdf5-4059-a231-21abc4ada7a4")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/3Dmodels/SOD-723_L1.0-W0.6-H0.6-LS1.4-RD.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
