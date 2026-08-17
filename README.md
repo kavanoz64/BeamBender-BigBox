@@ -45,7 +45,7 @@ Using a module rather than a bare FPGA is deliberate. The ECP5 only comes in BGA
 
 [Colorlight i5 + ext-board bundle on AliExpress](https://www.aliexpress.us/item/3256807602160285.html)
 
-Buy the **module and the dev board together**. The BigBox card programs the module in place, but having the ext-board as well gives you a second, independent way to load and recover a bitstream, which is worth the few extra dollars the first time something goes wrong.
+Buy the **module and the dev board together**. The BigBox card provides a JTAG header to program the module in place using an external programmer, but having the ext-board as well gives you a second, independent way to load and recover a bitstream, which may come handy.
 
 ---
 
@@ -113,9 +113,9 @@ Known open items:
 
 ## Building one
 
-Not yet recommended. Wait for a validated first article.
+Not yet recommended as there is no firmware to test with yet. The Gerbers have not been provided, but can be created from Kicad files if you feel adventurous. 
 
-When that time comes, the PCB is designed around **JLCPCB** fabrication and assembly, with part selection biased toward their basic library. The Colorlight i5 module, the SO-DIMM socket and the pogo pins are hand-fitted afterwards.
+When that time comes, the PCB is designed around **JLCPCB** fabrication and assembly, with part selection biased toward their basic library. The Colorlight i5 module and the pogo pins are hand-fitted afterwards.
 
 ---
 
