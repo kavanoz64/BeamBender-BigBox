@@ -1,0 +1,183 @@
+# BeamBender BigBox - Lattice ECP5 constraints
+# Device: LFE5U-25F-6BG381C  (Colorlight i5 v7.0)
+# Drop-in upgrade: LFE5U-45F-6BG381C (Colorlight i9 v7.2).
+# SO-DIMM pin 41 is deliberately unused so both modules work unchanged.
+#
+# Columns in comments: SO-DIMM pin / schematic net
+
+BLOCK RESETPATHS;
+BLOCK ASYNCPATHS;
+
+# ---------------------------------------------------------------- clocks
+LOCATE COMP "clk_c28o" SITE "J19";                  # pin 91  C28O_3V3
+LOCATE COMP "clk_14m" SITE "L20";                   # pin 81  14M_3V3
+LOCATE COMP "clk_27m" SITE "G3";                    # pin 134 XTAL_27M
+LOCATE COMP "clk_24m576" SITE "J20";                # pin 89  XTAL_24.576M
+
+# --------------------------------------------- Amiga video in (5V->3V3)
+LOCATE COMP "amiga_r[0]" SITE "C1";                 # pin 145 R0_3V3
+LOCATE COMP "amiga_r[1]" SITE "B1";                 # pin 143 R1_3V3
+LOCATE COMP "amiga_r[2]" SITE "U17";                # pin 71  R2_3V3
+LOCATE COMP "amiga_r[3]" SITE "U18";                # pin 69  R3_3V3
+LOCATE COMP "amiga_r[4]" SITE "A19";                # pin 123 R4_3V3
+LOCATE COMP "amiga_r[5]" SITE "B18";                # pin 121 R5_3V3
+LOCATE COMP "amiga_r[6]" SITE "B19";                # pin 119 R6_3V3
+LOCATE COMP "amiga_r[7]" SITE "A18";                # pin 127 R7_3V3
+LOCATE COMP "amiga_g[0]" SITE "T17";                # pin 67  G0_3V3
+LOCATE COMP "amiga_g[1]" SITE "M17";                # pin 65  G1_3V3
+LOCATE COMP "amiga_g[2]" SITE "P17";                # pin 63  G2_3V3
+LOCATE COMP "amiga_g[3]" SITE "R17";                # pin 61  G3_3V3
+LOCATE COMP "amiga_g[4]" SITE "K20";                # pin 85  G4_3V3
+LOCATE COMP "amiga_g[5]" SITE "N18";                # pin 77  G5_3V3
+LOCATE COMP "amiga_g[6]" SITE "L18";                # pin 83  G6_3V3
+LOCATE COMP "amiga_g[7]" SITE "D3";                 # pin 129 G7_3V3
+LOCATE COMP "amiga_b[0]" SITE "R18";                # pin 59  B0_3V3
+LOCATE COMP "amiga_b[1]" SITE "T18";                # pin 57  B1_3V3
+LOCATE COMP "amiga_b[2]" SITE "C18";                # pin 51  B2_3V3
+LOCATE COMP "amiga_b[3]" SITE "K18";                # pin 49  B3_3V3
+LOCATE COMP "amiga_b[4]" SITE "C3";                 # pin 135 B4_3V3
+LOCATE COMP "amiga_b[5]" SITE "N17";                # pin 75  B5_3V3
+LOCATE COMP "amiga_b[6]" SITE "P18";                # pin 73  B6_3V3
+LOCATE COMP "amiga_b[7]" SITE "B4";                 # pin 133 B7_3V3
+LOCATE COMP "amiga_hsync_n" SITE "E3";              # pin 137 HSYNC_3V3
+LOCATE COMP "amiga_vsync_n" SITE "C4";              # pin 131 VSYNC_3V3
+LOCATE COMP "amiga_csync_n" SITE "A3";              # pin 139 CSYNC_3V3
+LOCATE COMP "amiga_pixelsw" SITE "C17";             # pin 125 PIXELSW_3V3
+LOCATE COMP "amiga_psel" SITE "C2";                 # pin 141 PSEL_3V3
+LOCATE COMP "aga_detect" SITE "E20";                # pin 103 AGA_DETECT
+
+# ------------------------------------------------------------ OSD buttons
+LOCATE COMP "btn_1" SITE "D2";                      # pin 147 BT1_INPUT
+LOCATE COMP "btn_2" SITE "D1";                      # pin 149 BT2_INPUT
+LOCATE COMP "btn_3" SITE "E2";                      # pin 151 BT3_INPUT
+
+# ------------------------------------------------- HDMI out (SiI9022A)
+LOCATE COMP "hdmi_r[0]" SITE "L5";                  # pin 76  R0_FPGA
+LOCATE COMP "hdmi_r[1]" SITE "L4";                  # pin 74  R1_FPGA
+LOCATE COMP "hdmi_r[2]" SITE "M4";                  # pin 72  R2_FPGA
+LOCATE COMP "hdmi_r[3]" SITE "N4";                  # pin 70  R3_FPGA
+LOCATE COMP "hdmi_r[4]" SITE "R3";                  # pin 68  R4_FPGA
+LOCATE COMP "hdmi_r[5]" SITE "T3";                  # pin 66  R5_FPGA
+LOCATE COMP "hdmi_r[6]" SITE "M3";                  # pin 64  R6_FPGA
+LOCATE COMP "hdmi_r[7]" SITE "T2";                  # pin 62  R7_FPGA
+LOCATE COMP "hdmi_g[0]" SITE "F18";                 # pin 94  G0_FPGA
+LOCATE COMP "hdmi_g[1]" SITE "G18";                 # pin 90  G1_FPGA
+LOCATE COMP "hdmi_g[2]" SITE "H17";                 # pin 88  G2_FPGA
+LOCATE COMP "hdmi_g[3]" SITE "H18";                 # pin 86  G3_FPGA
+LOCATE COMP "hdmi_g[4]" SITE "J17";                 # pin 84  G4_FPGA
+LOCATE COMP "hdmi_g[5]" SITE "J18";                 # pin 82  G5_FPGA
+LOCATE COMP "hdmi_g[6]" SITE "J16";                 # pin 80  G6_FPGA
+LOCATE COMP "hdmi_g[7]" SITE "P16";                 # pin 78  G7_FPGA
+LOCATE COMP "hdmi_b[0]" SITE "D17";                 # pin 114 B0_FPGA
+LOCATE COMP "hdmi_b[1]" SITE "D18";                 # pin 112 B1_FPGA
+LOCATE COMP "hdmi_b[2]" SITE "E17";                 # pin 110 B2_FPGA
+LOCATE COMP "hdmi_b[3]" SITE "E16";                 # pin 104 B3_FPGA
+LOCATE COMP "hdmi_b[4]" SITE "F16";                 # pin 102 B4_FPGA
+LOCATE COMP "hdmi_b[5]" SITE "F17";                 # pin 100 B5_FPGA
+LOCATE COMP "hdmi_b[6]" SITE "E18";                 # pin 98  B6_FPGA
+LOCATE COMP "hdmi_b[7]" SITE "G16";                 # pin 96  B7_FPGA
+LOCATE COMP "hdmi_pclk" SITE "H16";                 # pin 92  /PIXEL_CLK
+LOCATE COMP "hdmi_de" SITE "G5";                    # pin 116 DE
+LOCATE COMP "hdmi_hsync" SITE "D16";                # pin 118 HSYNC_FPGA
+LOCATE COMP "hdmi_vsync" SITE "F5";                 # pin 120 VSYNC_FPGA
+LOCATE COMP "hdmi_reset_n" SITE "K4";               # pin 148 HDMI_RESET
+LOCATE COMP "hdmi_int_n" SITE "K3";                 # pin 146 INT
+LOCATE COMP "hdmi_cec" SITE "K5";                   # pin 150 CEC_D
+LOCATE COMP "i2c_scl" SITE "N2";                    # pin 58  SCL_I2C
+LOCATE COMP "i2c_sda" SITE "N3";                    # pin 60  SDA_I2C
+
+# --------------------------------------------------- Audio ADC (AK5720)
+LOCATE COMP "adc_mclk" SITE "A2";                   # pin 154 /MCLK_OUT
+LOCATE COMP "adc_reset_n" SITE "J5";                # pin 144 PDN_RESET_N
+LOCATE COMP "adc_fsel" SITE "H3";                   # pin 136 FSEL
+LOCATE COMP "adc_dif" SITE "H5";                    # pin 140 DIF|TDMI
+
+# ------------------------------------------------------------- I/O types
+# Every bank on the module edge is 3.3 V.
+IOBUF PORT "amiga_r[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[4]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[5]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[6]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_r[7]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[4]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[5]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[6]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_g[7]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[4]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[5]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[6]" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_b[7]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[4]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[5]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[6]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_r[7]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[4]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[5]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[6]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_g[7]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[0]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[1]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[2]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[3]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[4]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[5]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[6]" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_b[7]" IO_TYPE=LVCMOS33;
+IOBUF PORT "i2c_scl" IO_TYPE=LVCMOS33;
+IOBUF PORT "i2c_sda" IO_TYPE=LVCMOS33;
+IOBUF PORT "clk_14m" IO_TYPE=LVCMOS33;
+IOBUF PORT "clk_24m576" IO_TYPE=LVCMOS33;
+IOBUF PORT "clk_c28o" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_pclk" IO_TYPE=LVCMOS33;
+IOBUF PORT "aga_detect" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_de" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_hsync" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_vsync" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_pixelsw" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_vsync_n" IO_TYPE=LVCMOS33;
+IOBUF PORT "clk_27m" IO_TYPE=LVCMOS33;
+IOBUF PORT "adc_fsel" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_hsync_n" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_csync_n" IO_TYPE=LVCMOS33;
+IOBUF PORT "adc_dif" IO_TYPE=LVCMOS33;
+IOBUF PORT "amiga_psel" IO_TYPE=LVCMOS33;
+IOBUF PORT "adc_reset_n" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_int_n" IO_TYPE=LVCMOS33;
+IOBUF PORT "btn_1" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_reset_n" IO_TYPE=LVCMOS33;
+IOBUF PORT "btn_2" IO_TYPE=LVCMOS33;
+IOBUF PORT "hdmi_cec" IO_TYPE=LVCMOS33;
+IOBUF PORT "btn_3" IO_TYPE=LVCMOS33;
+IOBUF PORT "adc_mclk" IO_TYPE=LVCMOS33;
+
+# Series damping is fitted on the board for the clock nets, so no
+# extra drive strength is requested here.
+
+# ------------------------------------------------------------ frequencies
+FREQUENCY PORT "clk_c28o"   28.636 MHz;   # NTSC worst case (PAL 28.375)
+FREQUENCY PORT "clk_14m"    14.318 MHz;   # NTSC worst case (PAL 14.187)
+FREQUENCY PORT "clk_27m"    27.000 MHz;
+FREQUENCY PORT "clk_24m576" 24.576 MHz;
+
+# Derived, for reference once the PLLs are instantiated:
+#   clk_27m  x5.5 -> 148.500 MHz  pixel clock, 1080p50 and 1080p60
+#   clk_14m  x2   ->  28.375 MHz  A2000/A3000 capture clock
