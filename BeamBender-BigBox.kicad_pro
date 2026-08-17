@@ -1447,7 +1447,7 @@
         "uuid": "e201ddfc-f3e6-4b15-bc96-c4891dcea6f4"
       }
     ],
-    "used_designators": "CN1-2,U1-10,U16,R1-33,R35-42,#FLG1-7,#FLG9-11,D1-7,#PWR1-2,#PWR4-8,C2-3,C5-51,C59,C74-75,C101,C145,C154,FB2-4,FB40,FB102,F1,F3,H1-2,J2-3,J13,X1-2,JP1,SW1-3,BT2-3,Y1",
+    "used_designators": "CN1-2,U1-10,U16,R1-33,R35-44,#FLG1-7,#FLG9-11,D1-7,#PWR1-2,#PWR4-8,C2-3,C5-51,C59,C74-75,C101,C145,C154,FB2-4,FB40,FB102,F1,F3,H1-2,J2-3,J13,X1-2,JP1,SW1-3,BT2-3,Y1",
     "variants": []
   },
   "sheets": [
