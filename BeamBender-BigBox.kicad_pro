@@ -94,27 +94,35 @@
           ""
         ],
         [
-          "silk_edge_clearance|70210000|130400000|185338b9-eb60-40a5-9e17-a3514f69be2a|b1dd6b49-72fe-4231-b064-6776370faf98",
+          "silk_edge_clearance|70210000|129400000|185338b9-eb60-40a5-9e17-a3514f69be2a|b1dd6b49-72fe-4231-b064-6776370faf98",
           ""
         ],
         [
-          "silk_edge_clearance|70210000|133800000|185338b9-eb60-40a5-9e17-a3514f69be2a|55d97e54-5ae0-4691-a4f4-12979b4069a0",
+          "silk_edge_clearance|70210000|132800000|185338b9-eb60-40a5-9e17-a3514f69be2a|55d97e54-5ae0-4691-a4f4-12979b4069a0",
           ""
         ],
         [
-          "silk_edge_clearance|70210000|80400000|185338b9-eb60-40a5-9e17-a3514f69be2a|51111645-bdb5-4084-b376-ce64bcfc7e61",
+          "silk_edge_clearance|70210000|65200000|185338b9-eb60-40a5-9e17-a3514f69be2a|17084334-5a82-481e-910c-d0a68509dbaf",
           ""
         ],
         [
-          "silk_edge_clearance|70210000|83800000|185338b9-eb60-40a5-9e17-a3514f69be2a|62e2dc02-57c3-4392-af24-2d0be5fb13f9",
+          "silk_edge_clearance|70210000|71200000|185338b9-eb60-40a5-9e17-a3514f69be2a|251c8746-1220-44b5-8064-bff975ca4a53",
           ""
         ],
         [
-          "silk_edge_clearance|70210000|90400000|185338b9-eb60-40a5-9e17-a3514f69be2a|94c8b984-3f42-438e-af0d-8e2eedf3001f",
+          "silk_edge_clearance|70210000|81400000|185338b9-eb60-40a5-9e17-a3514f69be2a|51111645-bdb5-4084-b376-ce64bcfc7e61",
           ""
         ],
         [
-          "silk_edge_clearance|70210000|93800000|185338b9-eb60-40a5-9e17-a3514f69be2a|bf70b3c4-66ec-4654-9e73-015a4d4fb299",
+          "silk_edge_clearance|70210000|84800000|185338b9-eb60-40a5-9e17-a3514f69be2a|62e2dc02-57c3-4392-af24-2d0be5fb13f9",
+          ""
+        ],
+        [
+          "silk_edge_clearance|70210000|91400000|185338b9-eb60-40a5-9e17-a3514f69be2a|94c8b984-3f42-438e-af0d-8e2eedf3001f",
+          ""
+        ],
+        [
+          "silk_edge_clearance|70210000|94800000|185338b9-eb60-40a5-9e17-a3514f69be2a|bf70b3c4-66ec-4654-9e73-015a4d4fb299",
           ""
         ]
       ],
@@ -317,7 +325,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "0.1"
+      "sch_revision": "0.2"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -337,7 +345,16 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "ground_pin_not_ground|469900|1600200|ee8df457-cb74-4168-b8e6-9215388af88f|00000000-0000-0000-0000-000000000000|/e201ddfc-f3e6-4b15-bc96-c4891dcea6f4|/e201ddfc-f3e6-4b15-bc96-c4891dcea6f4|",
+        ""
+      ],
+      [
+        "power_pin_not_driven|469900|1600200|ee8df457-cb74-4168-b8e6-9215388af88f|00000000-0000-0000-0000-000000000000|/e201ddfc-f3e6-4b15-bc96-c4891dcea6f4|/e201ddfc-f3e6-4b15-bc96-c4891dcea6f4|",
+        ""
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -1301,6 +1318,7 @@
       "netlist": "",
       "plot": "",
       "specctra_dsn": "",
+      "step": "",
       "vrml": ""
     },
     "page_layout_descr_file": ""
@@ -1309,7 +1327,7 @@
     "annotate_start_num": 0,
     "annotation": {
       "method": 0,
-      "sort_order": 0
+      "sort_order": 1
     },
     "bom_export_filename": "${PROJECTNAME}.csv",
     "bom_fmt_presets": [],
@@ -1324,7 +1342,7 @@
     },
     "bom_presets": [],
     "bom_settings": {
-      "exclude_dnp": true,
+      "exclude_dnp": false,
       "fields_ordered": [
         {
           "group_by": false,
@@ -1358,8 +1376,8 @@
         },
         {
           "group_by": false,
-          "label": "Part Number",
-          "name": "Part Number",
+          "label": "MPN",
+          "name": "MPN",
           "show": true
         },
         {
@@ -1447,7 +1465,7 @@
         "uuid": "e201ddfc-f3e6-4b15-bc96-c4891dcea6f4"
       }
     ],
-    "used_designators": "CN1-2,U1-10,U16,R1-33,R35-44,#FLG1-7,#FLG9-11,D1-7,#PWR1-2,#PWR4-8,C2-3,C5-51,C59,C74-75,C101,C145,C154,FB2-4,FB40,FB102,F1,F3,H1-2,J2-3,J13,X1-2,JP1,SW1-3,BT2-3,Y1",
+    "used_designators": "CN1-2,U1-10,U16,U101-102,R1-33,R35-56,R126-131,R140-141,R145-148,#FLG1-7,#FLG9-11,D1-8,D109,#PWR1-2,#PWR4-9,C2-3,C5-64,C74-75,C101,C112,C138-143,C145-147,C154,C157-158,FB2-4,FB40,FB102,F1-3,H1-2,J2-3,J6,J13,J102,J107,X1-2,JP1,SW1-3,BT2-3,Y1",
     "variants": []
   },
   "sheets": [

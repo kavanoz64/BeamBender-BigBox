@@ -44,3 +44,6 @@ fp-info-cache
 
 # JLCPCB extracted Gerber folder
 **/jlcpcb/gerber
+
+# JLCPCB assembly files
+**/jlcpcb/production_files
