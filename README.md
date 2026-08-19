@@ -18,7 +18,7 @@ The A1200 version clips onto the Lisa chip and connects to the main board via an
 | Boards | Two, joined by FFC | One |
 | FPGA | Gowin GW1NR-9 (on-board) | Colorlight i5 module (SO-DIMM socket) |
 | Video RAM | FPGA-internal | 8 MB 32-bit SDRAM on module |
-| Audio in | 3.5 mm jack | Video slot (`lineLF` / `lineRT`) |
+| Audio in | 3.5 mm jack | Video slot, plus aux header and jack, mixed |
 | Power | External connector | Slot |
 
 ---
@@ -31,7 +31,9 @@ Using a module rather than a bare FPGA is deliberate. The ECP5 only comes in BGA
 
 **Video out:** an **SiI9022A** HDMI transmitter fed 24-bit parallel RGB888 at up to 148.5 MHz. Bit-banged TMDS would not reach 1080p60 on a non-SERDES ECP5, so a real transmitter earns its place.
 
-**Audio:** an **AK5720** 24-bit ADC digitises the Amiga's line audio from the slot and feeds I²S to the SiI9022A.
+**Audio:** an **AK5720** 24-bit ADC digitises the audio and feeds I²S straight to the SiI9022A, bypassing the FPGA entirely. Ahead of it, an **OPA1692** inverting summing amplifier mixes the Amiga's line audio from the slot with an auxiliary input, so you can fold in another card's audio or an external source. The aux input appears on both an internal header and a switched 3.5 mm jack, where inserting a plug mechanically disconnects the header. The amplifier runs from the slot's +12 V through its own RC filter rather than the digital 5 V rail, and the ESD clamp on the external jack protects both entry points.
+
+**HDMI +5 V:** HDMI requires the source to supply 5 V on pin 18, and plenty of DIY designs simply tie it to the board rail. That invites two failure modes: a shorted cable dragging your supply down, and cheap televisions pushing 5 V *back* into your system. A **TPS2553** load switch sits in that path instead, current-limited to a guaranteed minimum of 422 mA with reverse-current blocking, so neither can happen. Its enable and fault lines run to the FPGA, so a future OSD can report faults and power-cycle a sink that has latched up.
 
 **Level shifting:** two 74LVC16244 buffers translate the Amiga's 5 V logic to 3.3 V. The ECP5 is *not* 5 V tolerant, so these are mandatory rather than optional.
 
