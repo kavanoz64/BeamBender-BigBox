@@ -205,7 +205,7 @@
         "min_microvia_drill": 0.1,
         "min_resolved_spokes": 1,
         "min_silk_clearance": 0.0,
-        "min_text_height": 0.8,
+        "min_text_height": 0.7,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
         "min_track_width": 0.1524,
@@ -325,7 +325,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "0.2"
+      "sch_revision": "0.3"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -1388,21 +1388,21 @@
         },
         {
           "group_by": false,
-          "label": "Exclude from BOM",
-          "name": "${EXCLUDE_FROM_BOM}",
-          "show": false
-        },
-        {
-          "group_by": true,
-          "label": "DNP",
-          "name": "${DNP}",
+          "label": "Exclude from Board",
+          "name": "${EXCLUDE_FROM_BOARD}",
           "show": false
         },
         {
           "group_by": false,
-          "label": "Exclude from Board",
-          "name": "${EXCLUDE_FROM_BOARD}",
+          "label": "Exclude from BOM",
+          "name": "${EXCLUDE_FROM_BOM}",
           "show": true
+        },
+        {
+          "group_by": false,
+          "label": "DNP",
+          "name": "${DNP}",
+          "show": false
         },
         {
           "group_by": false,
@@ -1415,11 +1415,29 @@
           "label": "#",
           "name": "${ITEM_NUMBER}",
           "show": false
+        },
+        {
+          "group_by": false,
+          "label": "EXCLUDE_FROM_POS_FILES",
+          "name": "${EXCLUDE_FROM_POS_FILES}",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "KLC_S5.1",
+          "name": "KLC_S5.1",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "KLC_S3.3",
+          "name": "KLC_S3.3",
+          "show": false
         }
       ],
       "filter_string": "",
       "group_symbols": true,
-      "include_excluded_from_bom": false,
+      "include_excluded_from_bom": true,
       "name": "",
       "sort_asc": true,
       "sort_field": "Reference"
@@ -1465,7 +1483,7 @@
         "uuid": "e201ddfc-f3e6-4b15-bc96-c4891dcea6f4"
       }
     ],
-    "used_designators": "CN1-2,U1-10,U16,U101-102,R1-33,R35-60,R126-131,R140-141,R145-148,#FLG1-7,#FLG9-11,D1-8,D109,#PWR1-2,#PWR4-9,C2-3,C5-65,C74-75,C101,C112,C138-143,C145-147,C154,C157-158,FB2-4,FB40,FB102,F1-3,H1-2,J2-3,J6,J13,J102,J107,X1-2,JP1,SW1-3,BT2-3,Y1",
+    "used_designators": "CN1-2,U1-10,U16,U101-102,R1-33,R35-60,R126-131,R140-141,R145-148,#FLG1-7,#FLG9-11,D1-8,D109,#PWR1-2,#PWR4-9,C2-3,C5-65,C74-75,C101,C112,C138-143,C145-147,C154,C157-158,FB2-4,FB40,FB102,F1-3,H1-2,J2-3,J6,J13,J102,J107,X1-2,JP1,SW1-3,BT2-3,Y1,TP1-11,TP14-55,SJ2",
     "variants": []
   },
   "sheets": [
