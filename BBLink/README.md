@@ -7,12 +7,12 @@ mouse and somewhere to read the numbers.
 
 | | what it is for |
 |---|---|
-| **BBLink** | the window. Every setting, the live pages, the card's buttons, and your settings backed up to a file. This is the one you will use. |
-| **BBMode** | runs in the background and tells the card which monitor mode the Amiga just switched to. No longer needed - the card detects every mode by itself, reliably - but still here for anyone who wants the card told rather than left to measure. |
-| **BBSurvey** | opens every screen mode the Amiga has, one after another, and logs what the card measures on each. |
-| **BBProbe** | for when nothing answers. It prints the raw bytes on the wire and squares up one line at a time so a meter or a scope can find the break. It also reads raw lines of the picture. |
-| **BBScreen** | opens one screen mode with a test pattern and runs a command in front of it. |
-| **BBLag** | a field counter in digits big enough to film, for measuring the card's lag against the Amiga's own video. |
+| [**BBLink**](#bblink) | the window. Every setting, the live pages, the card's buttons, and your settings backed up to a file. This is the one you will use. |
+| [**BBMode**](#bbmode) | runs in the background and tells the card which monitor mode the Amiga just switched to. No longer needed - the card detects every mode by itself, reliably - but still here for anyone who wants the card told rather than left to measure. |
+| [**BBSurvey**](#bbsurvey) | opens every screen mode the Amiga has, one after another, and logs what the card measures on each. |
+| [**BBProbe**](#bbprobe) | for when nothing answers. It prints the raw bytes on the wire and squares up one line at a time so a meter or a scope can find the break. It also reads raw lines of the picture. |
+| [**BBScreen**](#bbscreen) | opens one screen mode with a test pattern and runs a command in front of it. |
+| [**BBLag**](#bblag) | a field counter in digits big enough to film, for measuring the card's lag against the Amiga's own video. |
 
 They share one link and take it only for the length of a single exchange, so
 they can all run at the same time.
