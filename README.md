@@ -6,7 +6,7 @@ The card plugs into the video slot, taps the digital RGB signals before they eve
 
 > This project is a big-box adaptation of [**jbilander/BeamBender**](https://github.com/jbilander/BeamBender), Jörgen Bilander's scandoubler for the Amiga 1200 (and 500). The original design's approach and much of its analogue and HDMI circuitry carry over directly. Jörgen has also provided hardware guidance throughout this redesign. All credit for the concept belongs upstream.
 
-**Status: revision 0.3 hardware built and working on the Amiga 4000D, 4000T, 3000 and 2000 (ECS and OCS). Every Amiga monitor mode captured, including the A2024.** See [Status](#status) for detail.
+**Status: revision 0.3 hardware built and working on the Amiga 4000D, 4000T, 3000 and 2000 (ECS and OCS). Every Amiga monitor mode captured, including the A2024; interlaced modes deinterlaced motion-adaptively on both modules.** See [Status](#status) for detail.
 
 ---
 
@@ -123,7 +123,7 @@ The firmware **sources are not published yet**. They will be, once the gateware 
 
 All formats run at 50 or 60 Hz, following the Amiga automatically or forced from the menu. The format is chosen from a list rather than cycled, so the monitor re-locks once, on the one you asked for.
 
-**Input.** Every mode the Amiga's monitor drivers produce: PAL and NTSC, Euro36, Euro72, Super72, DblPAL, DblNTSC and Multiscan, in LoRes, HiRes and Super-Hires, progressive and interlaced. The card recognises which monitor it is looking at from the line length and the lines per field, and keeps a settings set for each - ten in all - so the geometry and sampling phase you set for one mode are there again the next time that mode appears. Super-Hires is captured at full width, 1280 samples per line, one per output pixel rather than averaged down. Interlaced modes are **woven** (both fields assembled into one frame) or **bobbed**, chosen from the menu.
+**Input.** Every mode the Amiga's monitor drivers produce: PAL and NTSC, Euro36, Euro72, Super72, DblPAL, DblNTSC and Multiscan, in LoRes, HiRes and Super-Hires, progressive and interlaced. The card recognises which monitor it is looking at from the line length and the lines per field, and keeps a settings set for each - ten in all - so the geometry and sampling phase you set for one mode are there again the next time that mode appears. Super-Hires is captured at full width, 1280 samples per line, one per output pixel rather than averaged down. Interlaced modes are **deinterlaced motion-adaptively**: the card compares each field with the previous one of the same parity, block by block (16 pixels wide, one field line tall), weaves the two fields where the picture is still and interpolates the newer field where it moved - so a still Workbench stays as sharp as a weave and a moving pointer or a scrolling window does not comb. Plain weave and bob are still there, chosen from the menu (Deinterlace = Adaptive, Weave or Bob), and Display Info counts the moved blocks per field. Both modules do it. The one visible cost of the block scheme: static detail sharing a 16-pixel block with something moving is softened for as long as the movement lasts.
 
 **The A2024** is supported as a 1024x1024 (PAL) or 1024x800 (NTSC) greyscale picture - BeamBender BigBox is the first Amiga scandoubler ever to display the A2024 modes. Commodore's monitor rebuilt its picture from four or six panels sent one per 15 kHz frame; the card does the same, assembling the panels in its frame buffer and showing the whole picture at 1:1 on 1280x1024 or 1080p. Both the 15Hz and 10Hz modes work, on PAL and NTSC.
 
@@ -133,7 +133,9 @@ All formats run at 50 or 60 Hz, following the Amiga automatically or forced from
 
 **Sampling calibration** sweeps the capture phase against a static picture and finds the centre of the eye. Needed because there is no fine phase shift available on the C28O path, and because the A3000's doubled clock has a narrower window than the A4000's.
 
-**The Amiga control link** is three wires between test points already on the card - no new connector - giving a clocked full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) drive it: `BBLink` is a GadTools window with every setting, the live pages and the card's buttons, and it backs the settings up to a text file and restores them; `BBMode` tells the card which monitor the Amiga just switched to; `BBSurvey` walks every screen mode and logs what the card measured; `BBProbe` and `BBScreen` are the diagnostics. The wiring for the revision 0.3 board is in that README.
+**The Amiga control link** is three wires between test points already on the card - no new connector - giving a clocked full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) drive it: `BBLink` is a GadTools window with every setting, the live pages and the card's buttons, and it backs the settings up to a text file and restores them; `BBMode` tells the card which monitor the Amiga just switched to; `BBSurvey` walks every screen mode and logs what the card measured; `BBProbe` and `BBScreen` are the diagnostics; `BBLag` puts a field counter on the screen in digits big enough to film, for measuring the card's delay against the Amiga's own video. The wiring for the revision 0.3 board is in that README.
+
+**Latency**, measured with BBLag and a 240 fps camera on a PAL HiRes screen: the picture on the card's HDMI monitor is between one and two fields (20 to 40 ms) behind the same picture on an analogue monitor, the HDMI monitor's own scaler included. One field of that is the frame buffer by design - the card shows the last field it has completely captured - and the rest drifts with the phase between the Amiga's field rate and the card's free-running output.
 
 ---
 
@@ -148,11 +150,13 @@ What is confirmed working:
 - [x] First article fab and bring-up
 - [x] HDMI output with audio, on multiple sinks
 - [x] SDRAM frame buffer, full-width Super-Hires, interlace weave and bob
+- [x] Motion-adaptive deinterlacing, on both modules
 - [x] A4000D and A4000T (C28O path), A3000 and A2000 (doubled VCDAC path), OCS and ECS
 - [x] Capture-phase calibration on real hardware, on both machine types
 - [x] On-screen menu, settings saved to the module's SPI flash, one set per monitor mode
 - [x] EDID read-back from the sink, shown format by format on Monitor Info
-- [x] Amiga control link and the AmigaOS tools: BBLink, BBMode, BBSurvey, BBProbe, BBScreen
+- [x] Amiga control link and the AmigaOS tools: BBLink, BBMode, BBSurvey, BBProbe, BBScreen, BBLag
+- [x] Latency measured: one to two fields to the HDMI monitor
 - [x] i9 module support, with 800x600, 1024x768, 1280x1024 and 1600x1200
 - [x] 1920x1200 on both modules
 - [x] All the doubled-scan and productivity modes: DblPAL, DblNTSC, Super72, Euro36, Euro72, Multiscan
@@ -160,7 +164,6 @@ What is confirmed working:
 
 What is still open:
 
-- [ ] **Motion-adaptive deinterlacing** for LoRes and HiRes laced. Weave and bob are both there today; a picture that moves would want the card to choose between them per pixel.
 - [ ] **Hot-plug** - the transmitter's interrupt register is read today but nothing polls it, so a sink unplugged and replugged is recovered by changing format or by a power cycle
 - [ ] Measure actual current on the 5 V and 3.3 V rails
 
@@ -168,7 +171,7 @@ What is still open:
 
 **Hardware.** Measure the rails. The next board revision folds the Amiga link's three jumpers in as traces.
 
-**Firmware.** Motion-adaptive deinterlacing on the i9, and hot-plug.
+**Firmware.** Hot-plug. Adaptive deinterlacing for the 512-line DblPAL interlace (today it weaves plainly: the motion memory covers 256 lines a field).
 
 ---
 

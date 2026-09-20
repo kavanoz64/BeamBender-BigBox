@@ -12,6 +12,7 @@ mouse and somewhere to read the numbers.
 | **BBSurvey** | opens every screen mode the Amiga has, one after another, and logs what the card measures on each. |
 | **BBProbe** | for when nothing answers. It prints the raw bytes on the wire and squares up one line at a time so a meter or a scope can find the break. It also reads raw lines of the picture. |
 | **BBScreen** | opens one screen mode with a test pattern and runs a command in front of it. |
+| **BBLag** | a field counter in digits big enough to film, for measuring the card's lag against the Amiga's own video. |
 
 They share one link and take it only for the length of a single exchange, so
 they can all run at the same time.
@@ -86,17 +87,17 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.18  2026-09-19.06 i9
+BBLink 1.18  2026-09-20.02 i9
 ```
 
 **That version is the CARD's**, read over the link. The tool's own is under
 **About BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.18  for firmware 2026-09-19.06
-Sep 20 2026  00:30:00
+BBLink 1.18  for firmware 2026-09-20.02
+Sep 20 2026  18:00:00
 
-Card: 2026-09-19.05 i9
+Card: 2026-09-20.01 i9
 ```
 
 If those two firmware numbers differ, the tool was built against tables from
@@ -240,7 +241,7 @@ text file you can read and edit:
 
 ```
 # BeamBender BigBox settings
-# From a BigBox i9 running 2026-09-19.06, by BBLink 1.18
+# From a BigBox i9 running 2026-09-20.02, by BBLink 1.18
 # The live settings: what Save Settings would have written.
 
 [General]
@@ -248,6 +249,7 @@ Output Format = 1920x1080
 Output Frequency = Auto
 Status Lines = Shown
 Menu Position = Center
+Deinterlace = Adaptive
 ...
 
 [Input PAL]
@@ -541,6 +543,40 @@ signal complete; `DEPTH n` overrides.
 
 With `CMD "BBProbe LINE n FILE name"` it captures a line of a mode that
 only exists while a screen of that mode is open, which is what it is for.
+
+---
+
+# BBLag
+
+**Run it from a Shell.** It measures nothing itself: it puts a counter on
+the screen that advances every field, in digits 64 pixels tall, so that a
+camera can film a monitor on the Amiga's own video and the card's monitor
+in the same shot. The two numbers in one frame of that video differ by the
+card's lag, in fields (20 ms each on PAL, 16.67 on NTSC).
+
+```
+BBLag                        PAL or NTSC High Res, until Ctrl-C
+BBLag MODE "PAL:High Res"    a mode by name or hex number, as BBScreen
+BBLag WAIT 30                stop after 30 seconds
+```
+
+The screen shows, top to bottom: a bar that steps right every field and
+wraps every 32 (readable through motion blur when the digits are not); the
+count's low eight bits as eight squares; the field count; the same count
+in milliseconds. Everything is drawn in the first lines after the vertical
+blank, so each field carries one complete number.
+
+Film at 60 frames a second to read the lag to a field, or in a phone's
+slow-motion mode (120 or 240) to read it finer - the CRT's beam is visible
+as a bright band then, and the lag is the time between the same row of the
+same number on the two screens. Take the difference that repeats across
+ten or more frames: any camera frame that straddles a vertical blank
+catches one screen mid-change.
+
+Interlaced modes advance the count every field too, but each field
+carries half the rows, so the digits read as two numbers interleaved:
+use a non-interlaced mode unless the interlaced path is the one being
+measured, and then read the bar and the squares.
 
 ---
 
