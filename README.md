@@ -39,7 +39,7 @@ The **i5 (LFE5U-25F)** remains fully supported as the cheaper option. It has its
 
 **Audio:** an **AK5720** 24-bit ADC digitises the audio and feeds I²S straight to the SiI9022A, bypassing the FPGA entirely. Ahead of it, an **OPA1692** inverting summing amplifier mixes the Amiga's line audio from the slot with an auxiliary input, so you can fold in another card's audio or an external source. The aux input appears on both an internal header and a switched 3.5 mm jack, where inserting a plug mechanically disconnects the header. The amplifier runs from the slot's +12 V through its own RC filter rather than the digital 5 V rail, and the ESD clamp on the external jack protects both entry points.
 
-**HDMI +5 V:** HDMI requires the source to supply 5 V on pin 18, and plenty of DIY designs simply tie it to the board rail. That invites two failure modes: a shorted cable dragging your supply down, and cheap televisions pushing 5 V *back* into your system. A **TPS2553** load switch sits in that path instead, current-limited to a guaranteed minimum of 422 mA with reverse-current blocking, so neither can happen. Its enable and fault lines run to the FPGA, and the on-screen display reports the fault line today.
+**HDMI +5 V:** HDMI requires the source to supply 5 V on pin 18, and plenty of DIY designs simply tie it to the board rail. That invites two failure modes: a shorted cable dragging your supply down, and cheap televisions pushing 5 V *back* into your system. A **TPS2553** load switch sits in that path instead, current-limited to a guaranteed minimum of 422 mA with reverse-current blocking, so neither can happen. Its enable and fault lines run to the FPGA, and the on-screen display reports the fault line.
 
 **Level shifting:** two 74LVC16244 buffers translate the Amiga's 5 V logic to 3.3 V. The ECP5 is *not* 5 V tolerant, so these are mandatory rather than optional.
 
@@ -131,6 +131,8 @@ All formats run at 50 or 60 Hz, following the Amiga automatically or forced from
 
 **Monitor Info** reads the sink's EDID over the transmitter's DDC master and shows what the monitor actually claims to support, format by format, which is how you find out why a format is being refused.
 
+**Hot plug.** The card watches the transmitter's hot-plug detect. Unplug the HDMI cable and plug it back in, or plug in a different monitor, and within about a second the transmitter is reconfigured for the new sink, the picture returns on its own, and the EDID is read again so Monitor Info describes the monitor that is there now. A cable that merely wobbles is ignored.
+
 **Sampling calibration** sweeps the capture phase against a static picture and finds the centre of the eye. Needed because there is no fine phase shift available on the C28O path, and because the A3000's doubled clock has a narrower window than the A4000's.
 
 **The Amiga control link** is three wires between test points already on the card - no new connector - giving a clocked full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) drive it: `BBLink` is a GadTools window with every setting, the live pages and the card's buttons, and it backs the settings up to a text file and restores them; `BBMode` tells the card which monitor the Amiga just switched to; `BBSurvey` walks every screen mode and logs what the card measured; `BBProbe` and `BBScreen` are the diagnostics; `BBLag` puts a field counter on the screen in digits big enough to film, for measuring the card's delay against the Amiga's own video. The wiring for the revision 0.3 board is in that README.
@@ -155,6 +157,7 @@ What is confirmed working:
 - [x] Capture-phase calibration on real hardware, on both machine types
 - [x] On-screen menu, settings saved to the module's SPI flash, one set per monitor mode
 - [x] EDID read-back from the sink, shown format by format on Monitor Info
+- [x] Hot plug: a replugged or swapped monitor comes back on its own, EDID re-read
 - [x] Amiga control link and the AmigaOS tools: BBLink, BBMode, BBSurvey, BBProbe, BBScreen, BBLag
 - [x] Latency measured: one to two fields to the HDMI monitor
 - [x] i9 module support, with 800x600, 1024x768, 1280x1024 and 1600x1200
@@ -164,14 +167,13 @@ What is confirmed working:
 
 What is still open:
 
-- [ ] **Hot-plug** - the transmitter's interrupt register is read today but nothing polls it, so a sink unplugged and replugged is recovered by changing format or by a power cycle
 - [ ] Measure actual current on the 5 V and 3.3 V rails
 
 ### Next steps
 
 **Hardware.** Measure the rails. The next board revision folds the Amiga link's three jumpers in as traces.
 
-**Firmware.** Hot-plug. Adaptive deinterlacing for the 512-line DblPAL interlace (today it weaves plainly: the motion memory covers 256 lines a field).
+**Firmware.** Adaptive deinterlacing for the 512-line DblPAL interlace (today it weaves plainly: the motion memory covers 256 lines a field). Publishing the sources.
 
 ---
 

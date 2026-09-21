@@ -87,17 +87,17 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.18  2026-09-20.02 i9
+BBLink 1.18  2026-09-20.03 i9
 ```
 
 **That version is the CARD's**, read over the link. The tool's own is under
 **About BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.18  for firmware 2026-09-20.02
-Sep 20 2026  18:00:00
+BBLink 1.18  for firmware 2026-09-20.03
+Sep 20 2026  20:30:00
 
-Card: 2026-09-20.01 i9
+Card: 2026-09-20.02 i9
 ```
 
 If those two firmware numbers differ, the tool was built against tables from
@@ -241,7 +241,7 @@ text file you can read and edit:
 
 ```
 # BeamBender BigBox settings
-# From a BigBox i9 running 2026-09-20.02, by BBLink 1.18
+# From a BigBox i9 running 2026-09-20.03, by BBLink 1.18
 # The live settings: what Save Settings would have written.
 
 [General]
