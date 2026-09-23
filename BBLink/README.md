@@ -13,6 +13,7 @@ mouse and somewhere to read the numbers.
 | [**BBProbe**](#bbprobe) | for when nothing answers. It prints the raw bytes on the wire and squares up one line at a time so a meter or a scope can find the break. It also reads raw lines of the picture. |
 | [**BBScreen**](#bbscreen) | opens one screen mode with a test pattern and runs a command in front of it. |
 | [**BBLag**](#bblag) | a field counter in digits big enough to film, for measuring the card's lag against the Amiga's own video. |
+| [**BBKeyCon**](#bbkeycon) | a commodity: Left Shift + Left Alt + a key presses the card's buttons and brings up its pages, from any screen. |
 
 They share one link and take it only for the length of a single exchange, so
 they can all run at the same time.
@@ -87,14 +88,14 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.18  2026-09-20.03 i9
+BBLink 1.19  2026-09-22.01 i9
 ```
 
 **That version is the CARD's**, read over the link. The tool's own is under
 **About BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.18  for firmware 2026-09-20.03
+BBLink 1.19  for firmware 2026-09-22.01
 Sep 20 2026  20:30:00
 
 Card: 2026-09-20.02 i9
@@ -118,7 +119,8 @@ Top to bottom:
 
 - **Output Format**, **Output Frequency**, **Status Lines** and **Menu
   Position**, the settings you change most often. Output Format drops a
-  list under its button: click the format you want and the card switches
+  list under its button - one row a format, the current one marked `>`:
+  click the format you want and the card switches
   to it, or click anywhere else to leave it. The list is in ascending
   order and shows 720x480 or 720x576 according to the frequency the card
   is on. The other three are cycle gadgets: a click steps to the next
@@ -241,7 +243,7 @@ text file you can read and edit:
 
 ```
 # BeamBender BigBox settings
-# From a BigBox i9 running 2026-09-20.03, by BBLink 1.18
+# From a BigBox i9 running 2026-09-22.01, by BBLink 1.19
 # The live settings: what Save Settings would have written.
 
 [General]
@@ -577,6 +579,66 @@ Interlaced modes advance the count every field too, but each field
 carries half the rows, so the digits read as two numbers interleaved:
 use a non-interlaced mode unless the interlaced path is the one being
 measured, and then read the bar and the squares.
+
+---
+
+# BBKeyCon
+
+A commodity that puts the card's three buttons, and its pages, on the
+keyboard - so the menu can be opened, walked and closed while a game or a
+demo has the screen, without reaching into the machine or leaving for
+BBLink's window. Start it once:
+
+```
+Run >NIL: <NIL: BBKeyCon QUIET       from the startup-sequence
+BBKeyCon                             from a Shell, until Ctrl-C
+BBKeyCon MODS "lshift lcommand"      other modifier keys (default lshift lalt)
+BBKeyCon TEST                        the link stays closed: each key that
+                                     matches is printed, nothing reaches the card
+BBKeyCon VERBOSE                     as normal, and every press is printed
+```
+
+**Try `BBKeyCon TEST` first** on a machine it has not run on: it lists the
+nine key descriptions the OS accepted, then prints a line for every chord
+that matches, and the card is never touched. If a chord prints nothing, the
+keymap or the `MODS` pair is the thing to look at, not the link.
+
+Hold **Left Shift and Left Alt**, then press:
+
+| key | does |
+|---|---|
+| Esc | opens the menu, or closes whatever is open (menu, submenu, page) |
+| Cursor Right | the MENU button: enter the row, accept a value (with the menu closed, opens it) |
+| Cursor Up | the UP button: previous row, value up (repeats while held) |
+| Cursor Down | the DOWN button: next row, value down (repeats while held) |
+| Cursor Left | a long MENU press: abandons an Output Format choice; with the menu closed, toggles the status lines |
+| D | the Display Info page |
+| M | the Monitor Info page |
+| S | the Settings submenu |
+| A | the About page |
+
+From a page, Esc closes the menu and Right, Up or Down go back to the
+menu, as any button does at the card. The four cursor keys are the whole
+of the menu: Up and Down walk it, Right goes in, Left backs out. The keystrokes never reach a window.
+It shows in Exchange as "BBKeyCon", where it can be disabled or removed.
+
+Left Shift + Left Alt is the pair no part of the OS uses: the Left Amiga
+key with the cursor keys is Intuition's mouse emulation (and with Left Alt,
+the mouse button), Left Amiga + N and M flip screens, Right Amiga is every
+program's menu shortcut. `MODS` takes any two of `lshift`, `lalt` and
+`lcommand` (Left Amiga) if a program of yours wants the default pair.
+
+It holds the link open while it runs, which takes the parallel port only for
+the length of a frame, so BBLink and BBMode run beside it. A press that
+seems to do nothing was a frame lost to the link; press again.
+
+Two guards, after version 1.0 took the whole input stream with it on the
+bench (the menu toggling on every mouse movement and timer tick, keyboard
+and mouse dead until a reset): every key filter is checked for having
+taken its description before the commodity goes live, and more than twenty
+presses inside one second - no hand on a keyboard does that; a held Up
+repeats at ten - makes it switch itself off and exit, which gives the
+input back. Caps Lock is ignored on all nine keys.
 
 ---
 
