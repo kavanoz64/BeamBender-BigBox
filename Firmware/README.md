@@ -1,18 +1,35 @@
 # Loading the firmware
 
-The files in this folder are the card's firmware, one per module, named for
-the module and the firmware version:
+The files in this folder are the card's firmware, two per module, named for
+the module, the firmware version and the clock variant:
 
 ```
-BeamBender-BigBox_i9_<version>.bit     Colorlight i9  (LFE5U-45F)
-BeamBender-BigBox_i5_<version>.bit     Colorlight i5  (LFE5U-25F)
+BeamBender-BigBox_i9_<version>.bit         Colorlight i9  (LFE5U-45F)
+BeamBender-BigBox_i9_<version>-si1.bit     Colorlight i9, one-clock variant
+BeamBender-BigBox_i5_<version>.bit         Colorlight i5  (LFE5U-25F)
+BeamBender-BigBox_i5_<version>-si1.bit     Colorlight i5, one-clock variant
 ```
 
-Load the one that matches the module in your card. The programmer refuses
-the other one, so nothing can go wrong there. What follows is everything
-between a fresh module and a card that boots into the firmware on its own:
-unlocking the module's flash (once), a JTAG adapter, the software, and the
-two commands.
+Load the one that matches the module in your card - the programmer refuses
+a file for the other module, so nothing can go wrong there - and pick the
+clock variant from the board:
+
+- **A board without the Si5351C clock generator** (a revision 0.3 board
+  as built): either file. Both behave the same there: the i9 clocks the
+  four VESA formats from its own PLLs, the i5 offers the CEA formats and
+  1920x1200.
+- **A board with the Si5351C and all four of its outputs wired** (the
+  revision 0.3 rework, the next revision): the plain file gives each VESA
+  format its own Si5351 output; the `-si1` file drives every VESA format
+  from CLK0 alone and retunes the part at each format change. Both work;
+  `-si1` is the one that has had the most hours on the bench.
+- **A board with only CLK0 wired**: the `-si1` file.
+
+Either way the card measures the clocks it has at power-up and offers
+only the formats it can clock, so a wrong choice costs a format, never a
+picture. What follows is everything between a fresh module and a card
+that boots into the firmware on its own: unlocking the module's flash
+(once), a JTAG adapter, the software, and the two commands.
 
 ---
 
@@ -125,14 +142,14 @@ Two commands, one difference between them. **Into the FPGA's memory**, to
 try it - it runs immediately and is gone at the next power cycle:
 
 ```
-openFPGALoader -c ft232 --freq 10000000 -m BeamBender-BigBox_i9_2026-09-19.06.bit
+openFPGALoader -c ft232 --freq 10000000 -m BeamBender-BigBox_i9_2026-09-30.07.bit
 ```
 
 **Into the module's flash**, to keep it - the card boots into it from then
 on:
 
 ```
-openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-09-19.06.bit
+openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-09-30.07.bit
 ```
 
 That is `-m` for memory and `-f` for flash; everything else is the same.
@@ -145,6 +162,10 @@ protected: section 1.
 
 A settings record the card has saved in its flash lives in a corner the
 firmware does not touch, so your positions and sampling phases survive a
-firmware update. When a new firmware changes the record's format the card
-says so and starts from defaults; back your settings up first with the
-BBLink tool (see the `BBLink` folder) and restore them afterwards.
+firmware update. A newer firmware reads a record written by an older one
+(the current record format is version 12, and the firmware still loads
+version 11 and fills in what was not there); when a change does break the
+format the card says so and starts from defaults. Back your settings up
+first with the BBLink tool (see the `BBLink` folder) and restore them
+afterwards - the backup is a readable text file, and BBLink 1.23 or later
+writes the half-step scales into it correctly.

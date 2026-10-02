@@ -88,17 +88,17 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.19  2026-09-22.01 i9
+BBLink 1.23  2026-09-30.07 i9
 ```
 
 **That version is the CARD's**, read over the link. The tool's own is under
 **About BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.19  for firmware 2026-09-22.01
-Sep 20 2026  20:30:00
+BBLink 1.23  for firmware 2026-09-30.07
+Oct  1 2026  18:30:00
 
-Card: 2026-09-20.02 i9
+Card: 2026-09-30.06 i9
 ```
 
 If those two firmware numbers differ, the tool was built against tables from
@@ -149,11 +149,12 @@ Scale**, then **Vertical Offset** and **Vertical Scale**. The offsets move
 the finished picture inside the frame your monitor is given; the scales
 decide how big it is.
 
-Each scale is `Auto` or `x1` to `x6`: how many output columns each captured
-source column gets, or how many output rows each source line. `Auto` picks
-what the card has always picked - horizontally the multiplier that fills the
-4:3 box, vertically the largest that fits the active area - and is right
-almost always. Force one when you want something else: smaller, to make
+Each scale is `Auto` or `x1` to `x6` in half steps (`x1.5`, `x2.5` ... the
+half step draws every second column or row as the blend of its two
+neighbours): how many output columns each screen pixel gets, or how many
+output rows each screen line. `Auto` picks what the card has always picked
+- horizontally the multiplier that fills the 4:3 box, vertically the largest
+that fits the active area - and is right almost always. Force one when you want something else: smaller, to make
 room for **overscan** (capture more with Capture Width or Capture Height and
 it grows into the space instead of pushing the scale down a step), or
 larger, to fill a 16:9 screen edge to edge with a picture that was never
@@ -161,14 +162,28 @@ that shape.
 
 **A scale that does not fit is skipped.** The card's own cycle only stops on
 the scales its current output format has room for, given the size of the
-capture: 320 columns on 1280x1024 offer `Auto, x1, x2, x3, x4` and skip x5
-and x6. From here the gadget still lists every value, and one the card
+capture: 320 columns on 1280x1024 offer `Auto, x1 ... x4` and skip anything
+above. From here the gadget still lists every value, and one the card
 cannot use is refused with a message rather than taken. Display Info's
-`Scale` row (`2x4` is horizontal x vertical) shows what is actually in
-force.
+`Scale` row (`2x4` is horizontal x vertical, `1.5x3.5` with half steps)
+shows what is actually in force, and the rows read the same: a forced scale
+the card cannot use on the screen it is looking at reads `Auto` until that
+screen is back.
+
+**Every number is the screen's.** Capture Size is the width in the screen's
+own pixels (640 HiRes, 1280 Super-Hires) and the height in its lines (512
+for an interlaced PAL screen, 1024 for the A2024), the Capture Height row
+counts the same lines (stepping by two on an interlaced screen), and the
+scale is per screen pixel and per screen line, so Capture Size times Scale
+is what goes to the output. On a Super-Hires screen every sample is drawn,
+so the horizontal cycle offers `x1, x1.5, x2 ...` and never fewer columns
+than samples; the one fraction below 1, `x0.5`, appears only where 1280
+samples have to fit 640 columns (the SD formats).
 
 The offsets and scales are saved per output format and frequency; the
-positions, sampling phase and capture size per monitor mode.
+positions, sampling phase and capture size per monitor mode. Changing the
+output format puts both scales of the new format back on `Auto` ("no
+surprises"); the flash keeps what was saved until the next Save Settings.
 
 ## Changing a setting
 
@@ -221,9 +236,16 @@ and guessing at it would be worse than saying plainly what each one does.
   nothing at all is changed.
 - **Reset to Defaults** puts every setting back and does **not** save. Press
   Save Settings afterwards if that is what you want kept.
-- **Calibrate Sampling**, on the Input Sampling page, takes over the card's
-  own screen and asks a person to pick a sampling phase with the card's
-  buttons. The tool starts it and then gets out of the way.
+- **Calibrate Sampling**, on the Input Sampling page, sweeps the sampling
+  phase on the card (a few seconds, the card's own screen showing the
+  scores) and then waits for a verdict. From BBLink 1.22 the tool follows
+  it: while the card waits, the Calibrate Sampling button becomes
+  **Accept | Cancel**, every other row and button on the page is greyed,
+  and the **-** and **+** of Sampling Phase walk the card's selection
+  through the twenty measured points with the picture showing each.
+  Accept keeps the phase shown, Cancel puts back the one in use before the
+  sweep; the page is restored either way, and also when the verdict is
+  given with the card's own buttons.
 
 ## Report
 
@@ -233,8 +255,8 @@ describing a problem to anybody.
 
 ## Backup and Restore Settings
 
-Both are in the **Project** menu, on the right mouse button, with **About
-BBLink** under them. Each opens the standard file requester (asl.library;
+Both are in the **Project** menu, on the right mouse button, with **OSD
+Colours**, **About BBLink** and **Quit** under them. Each opens the standard file requester (asl.library;
 without it the file is `PROGDIR:BeamBender.settings` and the status line
 says so).
 
@@ -243,7 +265,7 @@ text file you can read and edit:
 
 ```
 # BeamBender BigBox settings
-# From a BigBox i9 running 2026-09-22.01, by BBLink 1.19
+# From a BigBox i9 running 2026-09-30.07, by BBLink 1.23
 # The live settings: what Save Settings would have written.
 
 [General]
@@ -261,7 +283,7 @@ Vertical Half Line = No
 Sampling Phase = 102
 Pixel Phase = 0
 Capture Width = 640
-Capture Height = 256
+Capture Height = 256   # lines per field: an interlaced screen shows twice this
 
 [Output 1920x1080 50Hz]
 Horizontal Offset = 0
@@ -272,7 +294,13 @@ Vertical Scale = Auto
 
 The scales are under the OUTPUT they belong to: a scale is an answer to
 how big the picture should be on a given output, and the card keeps one
-pair per output format alongside the offsets.
+pair per output format alongside the offsets. The file keeps each SET'S
+own units, since one set serves both the progressive and the interlaced
+screens of its standard: `Capture Height` is lines per field (256 where
+the window shows 512 on an interlaced screen), and `Horizontal Scale` the
+value on the 640-column grid (x2 where a Super-Hires screen shows x1). The
+report and the window show the screen's numbers. BBLink 1.23 or later is
+needed for a file with half-step scales: 1.22 wrote them as `Auto`.
 
 The words are the card's own: what a row shows on the monitor is what the
 file says. It is the **live** settings that are written, including anything
@@ -292,6 +320,28 @@ cycle until you do.
 This is also the way to carry settings across a firmware update that changes
 the record format: back up before, restore after, and the positions and
 sampling phases you spent an evening on are back without a button pressed.
+
+## OSD Colours
+
+**OSD Colours...** in the Project menu (BBLink 1.21, firmware 2026-09-28.02
+or later; spelt "Colors" unless the OS's locale says the United Kingdom)
+is a small Palette Prefs: a list of the six colours the card
+draws its menu in - the **Bands** (the bars at the top and bottom of the
+block), the **Highlight** bar under the selected row, **Labels**,
+**Values**, the **Shadow** under the text, and the menu **Background** (the
+colour the picture is dimmed towards at the Menu Background levels
+between 0 and 100 %, and the solid colour at 100 %) - with a swatch of
+the selected one under the list, Red / Green / Blue sliders with their
+numbers, the hex, and on Workbench 3.0 or later the colour wheel with its
+brightness slider (the sliders alone on 2.x). Text on the highlight bar
+is drawn in the shadow's colour; the alert red stays red. **Apply** sends
+the six to the card, which draws them at once; **Save** applies and then
+writes the card's flash, as Save Settings does; **Defaults** puts the
+built-in colours back in the list (FFD000, FFD000, B0B0B0, FFFFFF,
+000000, 000000) for the next Apply; **Cancel** closes the window. The
+colours are part of the settings record, so a backup carries them under
+`[OSD Colours]` and a restore puts them back. **Quit** in the same menu
+closes the tool, as the window's close gadget does.
 
 ### From a Shell
 

@@ -6,7 +6,7 @@ The card plugs into the video slot, taps the digital RGB signals before they eve
 
 > This project is a big-box adaptation of [**jbilander/BeamBender**](https://github.com/jbilander/BeamBender), Jörgen Bilander's scandoubler for the Amiga 1200 (and 500). The original design's approach and much of its analogue and HDMI circuitry carry over directly. Jörgen has also provided hardware guidance throughout this redesign. All credit for the concept belongs upstream.
 
-**Status: revision 0.3 hardware built and working on the Amiga 4000D, 4000T, 3000 and 2000 (ECS and OCS). Every Amiga monitor mode captured, including the A2024; interlaced modes deinterlaced motion-adaptively on both modules.** See [Status](#status) for detail.
+**Status: revision 0.3 hardware built and working on the Amiga 4000D, 4000T, 3000 and 2000 (ECS and OCS). Every Amiga monitor mode captured, including the A2024; interlaced modes deinterlaced motion-adaptively on both modules; integer and blended half-step scaling on both axes; with the Si5351C clock generator fitted, every output format on the i5 as well as the i9.** See [Status](#status) for detail.
 
 ---
 
@@ -31,9 +31,11 @@ The A1200 version clips onto the Lisa chip and connects to the main board via an
 
 Using a module rather than a bare FPGA is deliberate. The ECP5 only comes in BGA, and this design has a hard no-BGA-in-my-hands rule. A dead module is a socket swap, not a rework station. **SO-DIMM pin 41 is left unconnected** specifically so that the i5 and the i9 are interchangeable, since it is the one ball that differs between the two.
 
-**The i9 (LFE5U-45F, 44k LUT, 4 PLLs) is the recommended module.** It is pin-compatible, it drops straight into the same socket, and the extra fabric and the two extra PLLs are doing real work: the i9 build carries four VESA output formats that the i5 cannot clock, and it is the module with headroom for whatever comes next. Build with an i9 unless cost is the deciding factor.
+**The i9 (LFE5U-45F, 44k LUT, 4 PLLs) is the recommended module.** It is pin-compatible, it drops straight into the same socket, and the extra fabric and the two extra PLLs are doing real work: on a board without the clock generator below, the i9's PLLs are what clock the four VESA output formats, and it is the module with headroom for whatever comes next. Build with an i9 unless cost is the deciding factor.
 
-The **i5 (LFE5U-25F)** remains fully supported as the cheaper option. It has its own bitstream and covers the CEA formats plus 1920x1200, which is everything most people need for a television or a modern monitor. What it gives up is the 4:3 VESA formats.
+The **i5 (LFE5U-25F)** remains fully supported as the cheaper option, with its own bitstream. On its own it covers the CEA formats plus 1920x1200, which is everything most people need for a television or a modern monitor; with the **Si5351C** fitted it has every format the i9 has. It is the fuller module, at 77 % of its logic now, so it is also the one that decides what fits.
+
+**Clock generator:** an **Si5351C** (16-QFN) provides the pixel clocks the ECP5's PLLs cannot make from 27 MHz - 162 MHz for 1600x1200, 108 for 1280x1024, 65 for 1024x768 and 40 for 800x600 - on four inputs of the module. It was added to the revision 0.3 board as a rework and is part of the next revision. One firmware per module serves boards with and without it: at power-up the card measures the four pins, decides once which clocks are there, and offers each VESA format only while its clock is; an i9 falls back to its own PLL for a format whose clock is missing, an i5 drops to 1280x720. A one-output variant of the firmware (`-si1`) drives every VESA format from CLK0 alone, retuning the part over I²C at each format change, for a board that routes only that one output.
 
 **Video out:** an **SiI9022A** HDMI transmitter fed 24-bit parallel RGB888 at up to 148.5 MHz. Bit-banged TMDS would not reach 1080p60 on a non-SERDES ECP5, so a real transmitter earns its place.
 
@@ -76,9 +78,9 @@ Two details behind those choices:
 
 The two clocks that need PLLs sit on opposite die edges (banks 7 and 3), so each reaches its nearest PLL. That matters, because the LFE5U-25F only has two.
 
-Both clock paths are confirmed on hardware: the A4000 runs from C28O, and the A3000 and A2000 run from the doubled VCDAC through the PLL. The card detects which is present and picks automatically, and the choice can be overridden from the menu.
+Both clock paths are confirmed on hardware: the A4000 runs from C28O, and the A3000 and A2000 run from the doubled VCDAC through the PLL. The card detects which is present and picks automatically, and the choice can be overridden from the menu. The Si5351C's four outputs come in on pins 81 (CLK0 162 MHz - the same pin as the doubled VCDAC on a board without the part; the firmware tells the two apart by frequency), 97 (CLK1 65), 142 (CLK2 108) and 138 (CLK3 40), and are measured by the firmware rather than assumed.
 
-The card takes the slot's separate horizontal and vertical syncs by default; composite sync alone works too, and is selected from the menu.
+The card takes the slot's separate horizontal and vertical syncs. Composite sync alone is a build option (`--csync`), with the Sync Source row on the menu: it works on every mode including the AGA 31 kHz ones, but the separate syncs are the build that ships.
 
 ---
 
@@ -102,7 +104,7 @@ Bitstreams can be loaded to SRAM for fast iteration, or written to the module's 
 
 ## Firmware
 
-The gateware captures the Amiga's digital RGB into the module's SDRAM, scales it with integer nearest-neighbour, and drives the SiI9022A.
+The gateware captures the Amiga's digital RGB into the module's SDRAM, scales it, and drives the SiI9022A.
 
 **Prebuilt bitstreams are in [`Firmware/`](Firmware).** One file per module, named for the module and the firmware version. Load one and the card works; nothing else is needed. The AmigaOS tools that drive the card over its control link are in [`BBLink/`](BBLink), with their own README.
 
@@ -110,24 +112,26 @@ The firmware **sources are not published yet**. They will be, once the gateware 
 
 **Output formats.** One bitstream carries them all and the format is chosen from the menu:
 
-| | i9 (recommended) | i5 |
-|---|---|---|
-| 720x576 / 720x480 | yes | yes |
-| 800x600 | yes | no |
-| 1024x768 | yes | no |
-| 1280x720 | yes | yes |
-| 1280x1024 | yes | no |
-| 1600x1200 | yes | no |
-| 1920x1080 | yes | yes |
-| 1920x1200 | yes | yes |
+| | i9 (recommended) | i5 | i5 with Si5351C |
+|---|---|---|---|
+| 720x576 / 720x480 | yes | yes | yes |
+| 800x600 | yes | no | yes |
+| 1024x768 | yes | no | yes |
+| 1280x720 | yes | yes | yes |
+| 1280x1024 | yes | no | yes |
+| 1600x1200 | yes | no | yes |
+| 1920x1080 | yes | yes | yes |
+| 1920x1200 | yes | yes | yes |
 
-All formats run at 50 or 60 Hz, following the Amiga automatically or forced from the menu. The format is chosen from a list rather than cycled, so the monitor re-locks once, on the one you asked for.
+All formats run at 50 or 60 Hz, following the Amiga automatically or forced from the menu. The format is chosen from a list rather than cycled, so the monitor re-locks once, on the one you asked for. A card with the Si5351C and no saved format comes up on 1280x1024, the format that shows a 512-line interlaced screen at exactly x2.
 
-**Input.** Every mode the Amiga's monitor drivers produce: PAL and NTSC, Euro36, Euro72, Super72, DblPAL, DblNTSC and Multiscan, in LoRes, HiRes and Super-Hires, progressive and interlaced. The card recognises which monitor it is looking at from the line length and the lines per field, and keeps a settings set for each - ten in all - so the geometry and sampling phase you set for one mode are there again the next time that mode appears. Super-Hires is captured at full width, 1280 samples per line, one per output pixel rather than averaged down. Interlaced modes are **deinterlaced motion-adaptively, pixel by pixel**: as each field is captured the card compares every pixel with the same pixel of the previous field of the same parity, weaves the two fields wherever the picture is still and interpolates, from the newer field, only the pixels that moved - so a still Workbench stays as sharp as a weave, text keeps every one of its lines while the pointer passes over it, and a moving pointer or a scrolling window does not comb. Plain weave and bob are still there, chosen from the menu (Deinterlace = Adaptive, Weave or Bob), and Display Info counts the changed pixels per field. Both modules do it, for every laced mode up to 768 samples a line, the 512-line DblPAL interlace included; Super-Hires interlace weaves plainly.
+**Scaling.** The horizontal and vertical scales are chosen separately. **Auto** picks the largest integer that fits the format - PAL on 1080p is x2 by x3, a 512-line interlaced screen on 1280x1024 is x2 by x2 - and the picture is centred, with offsets from the menu. Forced scales add the **half steps, x1.5 to x5.5, blended**: each pair of source lines (or pixels) becomes 2k+1 rows (or columns) with the middle one the average of the two, so a PAL overscan screen of 288 lines fills 1008 of 1080p's rows at x3.5 with no uneven scanlines, and NTSC's 240 lines fill 1080 exactly at x4.5. Super-Hires is drawn on its own 1280 samples, never fewer columns than samples. Every number the menu shows is the screen's: a laced PAL screen reads 640x512, a Super-Hires one 1280 wide, the scale is per screen pixel and line, and the capture size times the scale is the output size. A format change, or a change of the screen being captured, puts both scales back on Auto. Scanline effect (two depths) and Super-Hires downsampling (sharp or soft, for the 720-wide formats) are settings; LoRes screens are stored one sample per pixel by default, so a 320-pixel screen reaches x6.
+
+**Input.** Every mode the Amiga's monitor drivers produce: PAL and NTSC, Euro36, Euro72, Super72, DblPAL, DblNTSC and Multiscan, in LoRes, HiRes and Super-Hires, progressive and interlaced. The card recognises which monitor it is looking at from the line length and the lines per field, and keeps a settings set for each - and separate sets for the ECS and AGA chipsets, whose screens sit at different places on the line - so the geometry and sampling phase you set for one mode are there again the next time that mode appears. Picture position defaults come from a per-mode table of the Amiga's own placement (the A2000, A3000 and A4000 all measured), with manual Horizontal and Vertical Position on top. The Amiga's 28 input pins are registered in the pad cells, so the sampling edge does not move from build to build. Super-Hires is captured at full width, 1280 samples per line, one per output pixel rather than averaged down. Interlaced modes are **deinterlaced motion-adaptively, two samples at a time**: as each field is captured the card compares every pair of samples (one LoRes pixel, two HiRes ones) with the same pair of the previous field of the same parity, weaves the two fields wherever the picture is still and interpolates, from the neighbouring lines, only what moved - in either field - so a still Workbench stays as sharp as a weave, text keeps every one of its lines while the pointer passes over it, and a moving pointer or a scrolling window does not comb, however fast the pointer goes. Plain weave and bob are still there, chosen from the menu (Deinterlace = Adaptive, Weave or Bob), Display Info shows which of them the picture on screen actually has, and counts the changed pairs per field. Both modules do it, for every laced mode up to 768 samples a line, the 512-line DblPAL interlace included; Super-Hires interlace weaves plainly.
 
 **The A2024** is supported as a 1024x1024 (PAL) or 1024x800 (NTSC) greyscale picture - BeamBender BigBox is the first Amiga scandoubler ever to display the A2024 modes. Commodore's monitor rebuilt its picture from four or six panels sent one per 15 kHz frame; the card does the same, assembling the panels in its frame buffer and showing the whole picture at 1:1 on 1280x1024 or 1080p. Both the 15Hz and 10Hz modes work, on PAL and NTSC.
 
-**On-screen display.** A text menu on the card's three buttons covers output format and frequency, picture position, scale and offsets, capture width and height, scanline and picture effects, menu size and position, source clock and sync source, sampling phase and calibration, plus Display Info and Monitor Info pages. Settings are written to the module's SPI flash and restored at power-up.
+**On-screen display.** A text menu on the card's three buttons covers output format and frequency, picture position, scale and offsets, capture width and height, scanline and picture effects, deinterlacing, menu size, position and background, the six OSD colours, source clock, sampling phase and calibration, plus Display Info, Monitor Info and Si5351 Info pages. Settings are written to the module's SPI flash and restored at power-up, and a record saved by an older firmware still loads.
 
 **Monitor Info** reads the sink's EDID over the transmitter's DDC master and shows what the monitor actually claims to support, format by format, which is how you find out why a format is being refused.
 
@@ -135,7 +139,7 @@ All formats run at 50 or 60 Hz, following the Amiga automatically or forced from
 
 **Sampling calibration** sweeps the capture phase against a static picture and finds the centre of the eye. Needed because there is no fine phase shift available on the C28O path, and because the A3000's doubled clock has a narrower window than the A4000's.
 
-**The Amiga control link** is three wires between test points already on the card - no new connector - giving a clocked full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) drive it: `BBLink` is a GadTools window with every setting, the live pages and the card's buttons, and it backs the settings up to a text file and restores them; `BBMode` tells the card which monitor the Amiga just switched to; `BBSurvey` walks every screen mode and logs what the card measured; `BBProbe` and `BBScreen` are the diagnostics; `BBLag` puts a field counter on the screen in digits big enough to film, for measuring the card's delay against the Amiga's own video. The wiring for the revision 0.3 board is in that README.
+**The Amiga control link** is three wires between test points already on the card - no new connector - giving a clocked full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) drive it: `BBLink` (1.23) is a GadTools window with every setting, the live pages and the card's buttons; it backs the settings up to a human-readable text file and restores them, edits the OSD colours in a Palette-style editor, follows the sampling calibration through, and writes a report of what the card sees; `BBMode` tells the card which monitor the Amiga just switched to; `BBSurvey` walks every screen mode and logs what the card measured; `BBProbe` and `BBScreen` are the diagnostics; `BBLag` puts a field counter on the screen in digits big enough to film, for measuring the card's delay against the Amiga's own video. The wiring for the revision 0.3 board is in that README.
 
 **Latency**, measured with BBLag and a 240 fps camera on a PAL HiRes screen: the picture on the card's HDMI monitor is between one and two fields (20 to 40 ms) behind the same picture on an analogue monitor, the HDMI monitor's own scaler included. One field of that is the frame buffer by design - the card shows the last field it has completely captured - and the rest drifts with the phase between the Amiga's field rate and the card's free-running output.
 
@@ -143,7 +147,7 @@ All formats run at 50 or 60 Hz, following the Amiga automatically or forced from
 
 ## Status
 
-**The revision 0.3 board works.** Fabricated, assembled, and running on an **Amiga 4000D**, an **Amiga 4000T**, an **Amiga 3000** and an **Amiga 2000**. HDMI output, audio, the SDRAM frame buffer, the on-screen menu, settings in flash, every Amiga monitor mode including the A2024, and the Amiga link with its tools are all confirmed on hardware.
+**The revision 0.3 board works.** Fabricated, assembled, and running on an **Amiga 4000D**, an **Amiga 4000T**, an **Amiga 3000** and an **Amiga 2000**. HDMI output, audio, the SDRAM frame buffer, the on-screen menu, settings in flash, every Amiga monitor mode including the A2024, the half-step scaling, the Si5351C clock generator (as a rework on this revision), and the Amiga link with its tools are all confirmed on hardware.
 
 ![Revision 0.3 board with an i5 module fitted](Images/Revision0.3-Board-With-i5.jpg)
 
@@ -164,6 +168,10 @@ What is confirmed working:
 - [x] 1920x1200 on both modules
 - [x] All the doubled-scan and productivity modes: DblPAL, DblNTSC, Super72, Euro36, Euro72, Multiscan
 - [x] The A2024, 15Hz and 10Hz, PAL and NTSC, reassembled to the full 1024-line picture
+- [x] The Si5351C clock generator: every output format on the i5, one firmware per module with or without the part
+- [x] Blended half-step scaling, x1.5 to x5.5, both axes; Super-Hires on its own samples; the menu in screen pixels and lines
+- [x] Composite sync on every mode, as a build option
+- [x] OSD colours, settings backup and restore, a report, from BBLink
 
 What is still open:
 
@@ -171,7 +179,7 @@ What is still open:
 
 ### Next steps
 
-**Hardware.** Measure the rails. The next board revision folds the Amiga link's three jumpers in as traces.
+**Hardware.** Measure the rails. The next board revision carries the Si5351C on the board and folds the Amiga link's three jumpers in as traces; one FPGA pin (the former BLANK input) is free.
 
 **Firmware.** Publishing the sources.
 
