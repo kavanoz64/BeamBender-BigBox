@@ -77,7 +77,7 @@ These rows are kept per **settings set**: one for each monitor mode on each chip
 
 | Row | Values (default **bold**) | What it does |
 |---|---|---|
-| Input Mode | PAL, NTSC, EURO36, A2024 PAL, A2024 NTSC, SUPER72, DBLPAL, DBLNTSC, EURO72, MULTISCAN, **Auto**, CUSTOM15, CUSTOM24 | Auto recognises the monitor mode by itself. Pick one by hand to set a mode up without the card changing its mind, or if Auto gets it wrong. It also chooses which set the rows below edit. CUSTOM15 and CUSTOM24 are monitor drivers with timing of their own, on a 15 or 24 kHz line. The four BB- drivers ([BBLink/Monitors](BBLink/Monitors/README.md)) are recognised on Auto, CUSTOM15 or CUSTOM24, each with a set named after it. |
+| Input Mode | PAL, NTSC, EURO36, A2024 PAL, A2024 NTSC, SUPER72, DBLPAL, DBLNTSC, EURO72, MULTISCAN, **Auto**, CUSTOM15, CUSTOM24 | Auto recognizes the monitor mode by itself. Pick one by hand to set a mode up without the card changing its mind, or if Auto gets it wrong. It also chooses which set the rows below edit. CUSTOM15 and CUSTOM24 are monitor drivers with timing of their own, on a 15 or 24 kHz line. The four BB- drivers ([BBLink/Monitors](BBLink/Monitors/README.md)) are recognized on Auto, CUSTOM15 or CUSTOM24, each with a set named after it. |
 | Calibrate Sampling | action | finds the best Sampling Phase ([how](#calibrating-the-sampling)) |
 | Sampling Phase | 0 to 159 | the fine sampling edge, 0.22 ns a step. N/A on 28M. |
 | Pixel Phase | a few steps | the coarse sampling edge: which capture clock in each pixel is used |
@@ -101,7 +101,7 @@ Kept per output format.
 | Vertical Offset | number | moves the picture up or down |
 | Vertical Scale | **Auto**, x1 to x6 in half steps | output lines per screen line |
 
-Auto picks the largest whole scale that fits and centres the picture. The half steps (x1.5 to x5.5) blend the middle row or column of each pair, so there are no uneven lines. Scales that do not fit are skipped. On a Super-Hires screen the horizontal scale is per Super-Hires pixel, so x0.5 can appear on the SD formats. A new output format, or a new screen on the Amiga, puts both scales back on Auto.
+Auto picks the largest whole scale that fits and centers the picture. The half steps (x1.5 to x5.5) blend the middle row or column of each pair, so there are no uneven lines. Scales that do not fit are skipped. On a Super-Hires screen the horizontal scale is per Super-Hires pixel, so x0.5 can appear on the SD formats. A new output format, or a new screen on the Amiga, puts both scales back on Auto.
 
 ## Settings
 
@@ -116,7 +116,7 @@ Auto picks the largest whole scale that fits and centres the picture. The half s
 | BBLink Protocol | **Enabled**, Disabled | whether the card answers the Amiga tools. Disabled takes it off the parallel port's handshake lines, for a printer or another parallel-port device. |
 | Audio | **On**, Off | HDMI audio |
 | Pixel Smoothing | **Off**, Soft, Softer, Softest | softens every pixel's edges over a third, two thirds or all of the pixel, for a less blocky scaled picture |
-| Gamma | 0.42 to 2.38 in eleven steps, **1.00** | the midtones: above 1.00 lighter, below darker, black and white unchanged. Drawn as a bar, no blocks at 0.42, five at 1.00, ten at 2.38. The menu and the status lines keep their colours. |
+| Gamma | 0.42 to 2.38 in eleven steps, **1.00** | the midtones: above 1.00 lighter, below darker, black and white unchanged. Drawn as a bar, no blocks at 0.42, five at 1.00, ten at 2.38. The menu and the status lines keep their colors. |
 
 ## Pages
 
@@ -144,14 +144,14 @@ Needs a still picture (Workbench is fine) and Source Clock on 7Mx4 or 14Mx2.
 
 ## Border and status lines
 
-While the status lines are shown, the screen has a coloured border:
+While the status lines are shown, the screen has a colored border:
 
 | Border | Means |
 |---|---|
 | green | syncs locked, pixels arriving |
 | red | no HSYNC |
 | blue | no VSYNC |
-| grey | no RGB activity |
+| gray | no RGB activity |
 
 The top status line is the capture and the output: position, phases, clock, sync, rate, output format, scale and capture size, ending in A, W or B (Adaptive, Weave, Bob) on an interlaced screen. The bottom line is the input: mode, field, line rate, lines, line length, RGB activity, Super-Hires pair counters and buffer underflow and overflow counts. Hide both with Status Lines, or by holding MENU with the menu closed.
 

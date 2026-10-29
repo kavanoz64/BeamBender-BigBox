@@ -15,14 +15,14 @@ the ECS or AGA chips, and run on a 68000.
 | BB-HD720p | 0x00BB1000 | Super-High Res Laced, 1280x720 (0x00BB9024) | 17.65 kHz | 46.3 Hz |
 
 The rates are for a PAL crystal; an NTSC one runs 0.9 % faster. A line is
-TOTCLKS + 1 colour clocks and the two fields TOTROWS + 1 and TOTROWS + 2
-lines, as BeamBender measured them on an A4000. Version 1.2 (27 October
+TOTCLKS + 1 color clocks and the two fields TOTROWS + 1 and TOTROWS + 2
+lines, as BeamBender measured them on an A4000. Version 1.2 (October 27,
 2026) puts BB-800x600 and BB-1024x768 on TOTROWS 0x15F and 0x1A7 for fields
 at 50 Hz (1.1's 0x160 and 0x1A8 gave 49.9 Hz). These are
 not timings a monitor on the Amiga's 23-pin port will show. BeamBender
 weaves the two fields and sends its own HDMI timing, so the field rate does
-not show on its output. Colours: 256 on AGA, 4 in Super-High Res on ECS
-(BB-800x600 is High Res on ECS for that reason: 16 colours).
+not show on its output. Colors: 256 on AGA, 4 in Super-High Res on ECS
+(BB-800x600 is High Res on ECS for that reason: 16 colors).
 
 ## Try them from a Shell first
 
@@ -46,11 +46,11 @@ As tooltypes in the icon (Icons > Information), or on the command line,
 which wins. The icons list them in brackets, switched off, with the
 built-in values. Numbers are decimal or hex (`0xA6` or `$A6`).
 
-- `TOTCLKS` the line in colour clocks (280 ns each), `TOTROWS` the field's
+- `TOTCLKS` the line in color clocks (280 ns each), `TOTROWS` the field's
   last line (fields of TOTROWS + 1 and TOTROWS + 2 lines)
 - `MINROW` the first line of the picture, `MINCOL` the first column (Low Res pixels)
 - `HBSTRT` / `HBSTOP` the horizontal blank, `VBSTRT` / `VBSTOP` the vertical
-  blank (colour clocks from the field's start), `BEAMCON0`
+  blank (color clocks from the field's start), `BEAMCON0`
 - `RES=HIRES` or `RES=SHRES`: BB-800x600 only, High Res or Super-High Res
   whatever the chipset (High Res uses TOTCLKS 0xF0, TOTROWS 0x140)
 - `VERBOSE` (command line): what was installed
@@ -69,7 +69,7 @@ release 2026-10-28.01, and before it the src-cust test firmware from
 2026-10-27.70 (the Input row named so from 2026-10-27.71): H 217, V 13, and the mode's own size. Super-High Res is stored as such whatever is
 on the screen. On ECS the position is an estimate until it has been
 measured, and BB-800x600's 800 High Res pixels are past the card's
-724-sample High Res ceiling (`RES=SHRES` gives all 800, in 4 colours).
+724-sample High Res ceiling (`RES=SHRES` gives all 800, in 4 colors).
 BBMode 1.2 pins the card on CUSTOM24 for BB-1024x768 and CUSTOM15 for the
 other three, and the card picks the BB- set from there.
 

@@ -59,7 +59,7 @@ executables and nothing else; this guide sits beside it.
 of their own, `bbmonitors.lha`, with their own guide beside it
 (`bbmonitors-README.md`; in the repository, `BBLink/Monitors`): four drivers
 for `DEVS:Monitors` that add the screen modes BB-800x600, BB-1024x768,
-BB-1280x1024 and BB-HD720p, which the card recognises and frames by
+BB-1280x1024 and BB-HD720p, which the card recognizes and frames by
 themselves. AmigaOS 3.0 or later.
 
 ## Wiring the link on a revision 0.3 board
@@ -143,7 +143,7 @@ Top to bottom:
   the clock for it) is refused and the row stays as it was. The other three are cycle gadgets: a click steps to the next
   value. Status Lines turns the two information lines at the top and
   bottom of the picture off and on; Menu Position moves the card's menu
-  block through the centre and the four corners of the picture, so it can
+  block through the center and the four corners of the picture, so it can
   be put where it covers nothing you are looking at.
 - **Display Info** | **Input Sampling**
 - **Monitor Info** | **Output Geometry**
@@ -168,7 +168,7 @@ decide how big it is.
 
 Each scale is `Auto` or `x1` to `x6` in half steps (`x1.5`, `x2.5` ... the
 half step draws every second column or row as the blend of its two
-neighbours): how many output columns each screen pixel gets, or how many
+neighbors): how many output columns each screen pixel gets, or how many
 output rows each screen line. `Auto` picks what the card has always picked
 - horizontally the multiplier that fills the 4:3 box, vertically the largest
 that fits the active area - and is right almost always. Force one when you want something else: smaller, to make
@@ -220,7 +220,7 @@ white stay where they are. The card's menu and status lines are not
 affected. On the card itself, press the button on the row to open it, then
 the up and down buttons; it is saved with the other settings.
 
-A setting the card has greyed out in the current output format is **ghosted**
+A setting the card has grayed out in the current output format is **ghosted**
 here too. A gadget you cannot click says the same thing as `N/A` and cannot
 be clicked by mistake.
 
@@ -277,7 +277,7 @@ and guessing at it would be worse than saying plainly what each one does.
   phase on the card (a few seconds, the card's own screen showing the
   scores) and then waits for a verdict. From BBLink 1.22 the tool follows
   it: while the card waits, the Calibrate Sampling button becomes
-  **Accept | Cancel**, every other row and button on the page is greyed,
+  **Accept | Cancel**, every other row and button on the page is grayed,
   and the **-** and **+** of Sampling Phase walk the card's selection
   through the twenty measured points with the picture showing each.
   Accept keeps the phase shown, Cancel puts back the one in use before the
@@ -293,7 +293,7 @@ describing a problem to anybody.
 ## Backup and Restore Settings
 
 Both are in the **Project** menu, on the right mouse button, with **OSD
-Colours**, **About BBLink** and **Quit** under them. Each opens the standard file requester (asl.library;
+Colors**, **About BBLink** and **Quit** under them. Each opens the standard file requester (asl.library;
 without it the file is `PROGDIR:BeamBender.settings` and the status line
 says so).
 
@@ -372,25 +372,25 @@ power-up: everything in it is kept, and the new formats start on their
 defaults. A file from an older BBLink restores into the new firmware as
 any older file does.
 
-## OSD Colours
+## OSD Colors
 
-**OSD Colours...** in the Project menu (BBLink 1.21, firmware 2026-09-28.02
-or later; spelt "Colors" unless the OS's locale says the United Kingdom)
-is a small Palette Prefs: a list of the six colours the card
+**OSD Colors...** in the Project menu (BBLink 1.21, firmware 2026-09-28.02
+or later; spelled "Colors" unless the OS's locale says the United Kingdom)
+is a small Palette Prefs: a list of the six colors the card
 draws its menu in - the **Bands** (the bars at the top and bottom of the
 block), the **Highlight** bar under the selected row, **Labels**,
 **Values**, the **Shadow** under the text, and the menu **Background** (the
-colour the picture is dimmed towards at the Menu Background levels
-between 0 and 100 %, and the solid colour at 100 %) - with a swatch of
+color the picture is dimmed towards at the Menu Background levels
+between 0 and 100 %, and the solid color at 100 %) - with a swatch of
 the selected one under the list, Red / Green / Blue sliders with their
-numbers, the hex, and on Workbench 3.0 or later the colour wheel with its
+numbers, the hex, and on Workbench 3.0 or later the color wheel with its
 brightness slider (the sliders alone on 2.x). Text on the highlight bar
-is drawn in the shadow's colour; the alert red stays red. **Apply** sends
+is drawn in the shadow's color; the alert red stays red. **Apply** sends
 the six to the card, which draws them at once; **Save** applies and then
 writes the card's flash, as Save Settings does; **Defaults** puts the
-built-in colours back in the list (FFD000, FFD000, B0B0B0, FFFFFF,
+built-in colors back in the list (FFD000, FFD000, B0B0B0, FFFFFF,
 000000, 000000) for the next Apply; **Cancel** closes the window. The
-colours are part of the settings record, so a backup carries them under
+colors are part of the settings record, so a backup carries them under
 `[OSD Colours]` and a restore puts them back. **Quit** in the same menu
 closes the tool, as the window's close gadget does.
 
@@ -452,7 +452,7 @@ sent.
 
 **You do not need it.** The card works out which monitor it is looking at
 from the line length and the lines per field, and the A2024 from its
-colour signature, and it does so reliably for every mode the Amiga has;
+color signature, and it does so reliably for every mode the Amiga has;
 that is what **Auto** does, and Auto is the right setting. BBMode exists
 for the one thing a measurement cannot do: the Amiga chose the mode, so it
 knows which monitor it is about to produce before the first line is drawn,
@@ -508,13 +508,13 @@ card to settle on each, and writes one line per mode to `BBSurvey.log` in
 the current directory: what the Amiga calls the mode and what the card
 measured on it. It is how the table of monitor modes inside the card was
 built, from measurement rather than from memory, and it is the quickest
-way to show that every mode a machine has is recognised.
+way to show that every mode a machine has is recognized.
 
 ```
 BBSurvey                 every mode, log to BBSurvey.log here
 BBSurvey FILE=name       the log goes there instead
 BBSurvey MONITOR=name    only that monitor's modes (PAL, DBLPAL, SUPER72 ...)
-BBSurvey DEPTH=n         screen depth, default 2 (four colours)
+BBSurvey DEPTH=n         screen depth, default 2 (four colors)
 BBSurvey WAIT=n          give a mode up after n seconds (default 5)
 BBSurvey ALL             include the VGAONLY monitor and the HAM, EHB and
                          dual-playfield variants, which are the same timing
@@ -533,8 +533,8 @@ in memory and in `BBSurvey.settings` beside the log (a BBLink settings file,
 so it can be restored by hand if the run is broken off). Then, for each
 mode that the OS says is available, it opens a screen of the mode's nominal
 size, paints it in bands of white, red and blue plus a band of single-pixel
-stripes (the LoRes detector needs neighbouring pixels that differ; flat
-colour reads as LoRes on every mode) with the mode's name at the top, and
+stripes (the LoRes detector needs neighboring pixels that differ; flat
+color reads as LoRes on every mode) with the mode's name at the top, and
 polls the card until what it measures has stopped changing: the
 flywheel re-locks, the standard detector settles and the monitor comes back
 over a few seconds, exactly as a ScreenMode prefs switch does. Five reads a
@@ -561,7 +561,7 @@ A line looks like this (one line in the file; wrapped here):
 Left of the bar is the Amiga's side: the ModeID, the name, the nominal size,
 whether the OS calls it interlaced and PAL, the maximum depth. Right of it is
 the card's: the Input row as the OSD shows it, the lock state, lines per
-field, line length in capture clocks, line rate, the colour bits that ever
+field, line length in capture clocks, line rate, the color bits that ever
 lit (an A2024 mode always reads `888899` because its four one-bit planes
 never light more, which is why A2024 screens are opened with all four
 whatever `DEPTH` says, falling back to fewer if the chip RAM will not take
@@ -605,7 +605,7 @@ inside), waits for the card to settle and writes a block to `BBModes.log`:
   capture clocks after HSYNC and lines after VSYNC (the units of
   Horizontal and Vertical Position): the first and last lit clock, how
   many clocks a pixel is, and then each field on its own (1.9): its first
-  and last line and the colour of its top and bottom row (white for the
+  and last line and the color of its top and bottom row (white for the
   screen's even rows, red for its odd ones), told apart by the probe's
   frame count, which steps once a field; then the H, V, Capture Width and
   Capture Height that would frame the picture exactly. On firmware that
@@ -647,7 +647,7 @@ Vertical Position counts (lines after the vertical sync). `TO m` walks a
 range of lines, `COUNT k` takes the same line from k frames in a row, and
 `FILE` writes it out instead of printing it. About 0.4 s a line. It exists
 for the A2024, whose frames say which quarter of the picture they carry in
-a line of coloured marks near the top - which is how the A2024 support was
+a line of colored marks near the top - which is how the A2024 support was
 measured.
 
 This exists because "no BeamBender answered on the parallel port" is the same
@@ -685,7 +685,7 @@ BBScreen MODE 49000 CMD "BBProbe LINE 18"   run a command with the screen up
 
 MODE is the start of a mode's name as ScreenMode prefs shows it, either
 case, or the mode's hex number. The pattern is rulers every 64 pixels, a
-grey ramp and single-line stripes across the top, a white border, and one
+gray ramp and single-line stripes across the top, a white border, and one
 to four white blocks in the four quarters of the screen so that a line read
 back over the link says which quarter it came from by counting. An A2024
 mode opens four planes deep, which BBSurvey found is what makes the A2024
@@ -817,9 +817,9 @@ minute on an otherwise working link are normal. A steady stream of them is a
 wiring problem: too long a jumper, a dry joint, or a serial cable holding one
 of the shared lines.
 
-**A setting is greyed and you think it should not be.**
+**A setting is grayed and you think it should not be.**
 The card decides that, not the tool. A setting that does nothing in the
-current output format is greyed on the card's own menu too.
+current output format is grayed on the card's own menu too.
 
 **BBLink says the card's firmware differs from the tool.**
 The tool was built against a different firmware number (a variant's markers,
