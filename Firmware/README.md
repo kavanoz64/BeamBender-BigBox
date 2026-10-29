@@ -1,35 +1,51 @@
 # Loading the firmware
 
 The files in this folder are the card's firmware, two per module, named for
-the module, the firmware version and the clock variant:
+the module and the firmware version, the C28 build with `-c28` after it:
 
 ```
-BeamBender-BigBox_i9_<version>.bit         Colorlight i9  (LFE5U-45F)
-BeamBender-BigBox_i9_<version>-si1.bit     Colorlight i9, one-clock variant
-BeamBender-BigBox_i5_<version>.bit         Colorlight i5  (LFE5U-25F)
-BeamBender-BigBox_i5_<version>-si1.bit     Colorlight i5, one-clock variant
+BeamBender-BigBox_i9_<version>.bit         Colorlight i9  (LFE5U-45F), standard
+BeamBender-BigBox_i9_<version>-c28.bit     Colorlight i9, C28
+BeamBender-BigBox_i5_<version>.bit         Colorlight i5  (LFE5U-25F), standard
+BeamBender-BigBox_i5_<version>-c28.bit     Colorlight i5, C28
 ```
 
-Load the one that matches the module in your card - the programmer refuses
-a file for the other module, so nothing can go wrong there - and pick the
-clock variant from the board:
+Load a file for the module in your card. The programmer refuses a file for
+the other module, so nothing can go wrong there. Every file runs with or
+without the Si5351C clock generator: the card measures the clocks it has at
+power-up and offers only the formats it can clock. Without the Si5351C the
+i9 clocks the seven formats that need 40, 65, 108 or 162 MHz from its own
+PLLs, and the i5 offers the other seven: 640x480, 720x576 / 720x480,
+1280x720, 1280x800, 1680x1050, 1920x1080 and 1920x1200.
 
-- **A board without the Si5351C clock generator** (a revision 0.3 board
-  as built): either file. Both behave the same there: the i9 clocks the
-  four VESA formats from its own PLLs, the i5 offers the CEA formats and
-  1920x1200.
-- **A board with the Si5351C and all four of its outputs wired** (the
-  revision 0.3 rework, the next revision): the plain file gives each VESA
-  format its own Si5351 output; the `-si1` file drives every VESA format
-  from CLK0 alone and retunes the part at each format change. Both work;
-  `-si1` is the one that has had the most hours on the bench.
-- **A board with only CLK0 wired**: the `-si1` file.
+## Standard or -c28
 
-Either way the card measures the clocks it has at power-up and offers
-only the formats it can clock, so a wrong choice costs a format, never a
-picture. What follows is everything between a fresh module and a card
-that boots into the firmware on its own: unlocking the module's flash
-(once), a JTAG adapter, the software, and the two commands.
+Both have the same menus and settings. They differ in where the clock for
+the five formats on 148.5 and 74.25 MHz (1920x1080, 1920x1200, 1680x1050,
+1280x720 and 1280x800) comes from.
+
+- **Standard:** the module's crystal, so every format runs at its exact
+  rate. A PAL Amiga screen runs at 49.92 Hz, a little under the output's
+  50 Hz, so once every 12.5 seconds the card shows a frame twice to keep
+  in step. The file for most people, and the one for NTSC and interlaced
+  screens.
+- **`-c28`:** the Amiga's own clock. On a PAL screen at 1920x1080 with
+  Output Frequency on Auto, every output frame is exactly one Amiga frame:
+  nothing is shown twice, and a smooth scroll stays smooth. The monitor
+  sees 49.92 Hz (50.37 Hz on a machine with an NTSC crystal), which all
+  four monitors tried took. Only that format is locked, so for the lock
+  choose 1920x1080 under Output Format (a card with no saved settings may
+  start on 1280x1024). The other formats work as on the standard file,
+  except 1280x720, 1280x800, 1680x1050, 1920x1200 and 1080p at 60 Hz,
+  which run about 4.5 % slow (48 to 58 Hz) and which some monitors
+  refuse. An interlaced PAL
+  screen runs 0.16 % off the lock and drops a field every 12.5 seconds,
+  and NTSC screens are not locked.
+
+What follows is everything between a fresh module and a card that boots
+into the firmware on its own: unlocking the module's flash (once), a JTAG
+adapter, the software, and the two commands. The card's menus and buttons
+are in the [User Guide](../USER_GUIDE.md).
 
 ---
 
@@ -142,14 +158,14 @@ Two commands, one difference between them. **Into the FPGA's memory**, to
 try it - it runs immediately and is gone at the next power cycle:
 
 ```
-openFPGALoader -c ft232 --freq 10000000 -m BeamBender-BigBox_i9_2026-09-30.07.bit
+openFPGALoader -c ft232 --freq 10000000 -m BeamBender-BigBox_i9_2026-10-28.04.bit
 ```
 
 **Into the module's flash**, to keep it - the card boots into it from then
 on:
 
 ```
-openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-09-30.07.bit
+openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-10-28.04.bit
 ```
 
 That is `-m` for memory and `-f` for flash; everything else is the same.
@@ -163,9 +179,10 @@ protected: section 1.
 A settings record the card has saved in its flash lives in a corner the
 firmware does not touch, so your positions and sampling phases survive a
 firmware update. A newer firmware reads a record written by an older one
-(the current record format is version 12, and the firmware still loads
-version 11 and fills in what was not there); when a change does break the
-format the card says so and starts from defaults. Back your settings up
-first with the BBLink tool (see the `BBLink` folder) and restore them
-afterwards - the backup is a readable text file, and BBLink 1.23 or later
-writes the half-step scales into it correctly.
+(the current record format is version 14, and the firmware still loads
+versions 11 to 13 and fills in what was not there); when a change does break
+the format the card starts from defaults. Back your settings up first with
+the BBLink tool (see the `BBLink` folder) and restore them afterwards - the
+backup is a readable text file. Back up with the BBLink made for the
+firmware on the card and restore with the one made for the new firmware
+(the one in `BBLink`); its About box names the firmware it was made for.

@@ -1,6 +1,6 @@
-# BeamBender BigBox — the Amiga tools
+# BeamBender BigBox: the Amiga tools
 
-Five programs that talk to a BeamBender BigBox card from the Amiga it is
+Seven programs that talk to a BeamBender BigBox card from the Amiga it is
 plugged into. Everything the card can do from its own on-screen display (OSD)
 and its three buttons, you can do from here instead, with a keyboard and a
 mouse and somewhere to read the numbers.
@@ -9,7 +9,7 @@ mouse and somewhere to read the numbers.
 |---|---|
 | [**BBLink**](#bblink) | the window. Every setting, the live pages, the card's buttons, and your settings backed up to a file. This is the one you will use. |
 | [**BBMode**](#bbmode) | runs in the background and tells the card which monitor mode the Amiga just switched to. No longer needed - the card detects every mode by itself, reliably - but still here for anyone who wants the card told rather than left to measure. |
-| [**BBSurvey**](#bbsurvey) | opens every screen mode the Amiga has, one after another, and logs what the card measures on each. |
+| [**BBSurvey**](#bbsurvey) | opens every screen mode the Amiga has, one after another, and logs what the card measures on each; `BBMODES` measures the BB monitors in full. |
 | [**BBProbe**](#bbprobe) | for when nothing answers. It prints the raw bytes on the wire and squares up one line at a time so a meter or a scope can find the break. It also reads raw lines of the picture. |
 | [**BBScreen**](#bbscreen) | opens one screen mode with a test pattern and runs a command in front of it. |
 | [**BBLag**](#bblag) | a field counter in digits big enough to film, for measuring the card's lag against the Amiga's own video. |
@@ -32,7 +32,7 @@ right.
 **Firmware and tool versions belong together.** BBLink shows the card's
 firmware version in its title bar and its own under **About BBLink...**;
 when the two firmware numbers differ, rebuild the tools against the
-firmware you are running (see the About section below). A page or a row
+firmware you are running (see [BBLink](#bblink) below). A page or a row
 the running firmware does not have is simply missing from the tool rather
 than opened in the wrong place.
 
@@ -45,15 +45,22 @@ and `misc.resource`, which hands out the parallel port, is older than that.
 
 ## Installing
 
-Unpack `bblink.lha` wherever you like — `SYS:Tools` is a reasonable home.
+Unpack `bblink.lha` wherever you like; `SYS:Tools` is a reasonable home.
 
 ```
 lha x bblink.lha
 ```
 
 LhA keeps the protection bits, so the executable flag survives the trip and
-none of the five needs `Protect +e`. The archive holds the five executables
-and nothing else; this guide sits beside it.
+none of the seven needs `Protect +e`. The archive holds the seven
+executables and nothing else; this guide sits beside it.
+
+**The BB- monitor drivers** (from firmware 2026-10-28.01) come in an archive
+of their own, `bbmonitors.lha`, with their own guide beside it
+(`bbmonitors-README.md`; in the repository, `BBLink/Monitors`): four drivers
+for `DEVS:Monitors` that add the screen modes BB-800x600, BB-1024x768,
+BB-1280x1024 and BB-HD720p, which the card recognises and frames by
+themselves. AmigaOS 3.0 or later.
 
 ## Wiring the link on a revision 0.3 board
 
@@ -88,23 +95,29 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.23  2026-09-30.07 i9
+BBLink 1.28  2026-10-28.04 i9
 ```
 
-**That version is the CARD's**, read over the link. The tool's own is under
-**About BBLink...** in the Project menu (right mouse button):
+**That version is the CARD's**, read over the link. A card running a build
+variant shows its markers after the number, as in the bitstream's name:
+`-csync` (composite sync), `-si1` (one Si5351 output), `-c28` (the pixel
+clock from the Amiga's), for example `2026-10-23.01-c28 i9`. Firmware before
+2026-10-23.01 does not report them. The tool's own version is under **About
+BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.23  for firmware 2026-09-30.07
-Oct  1 2026  18:30:00
+BBLink 1.28  for firmware 2026-10-28.04
+Oct 28 2026  13:00:00
 
-Card: 2026-09-30.06 i9
+Card: 2026-10-28.04-c28 i9
 ```
 
-If those two firmware numbers differ, the tool was built against tables from
+If those two firmware NUMBERS differ, the tool was built against tables from
 another firmware. It still runs, but a setting that moved between those two
 versions will be in the wrong place, so rebuild it against the firmware you
-are running.
+are running. The markers are not compared: a variant is the same firmware
+built with other options, so the tools built for it work with all its
+variants.
 
 The second line is when that binary was compiled, and it is the one to look
 at when a rebuild does not seem to have taken. It is fixed at compile time,
@@ -123,7 +136,11 @@ Top to bottom:
   click the format you want and the card switches
   to it, or click anywhere else to leave it. The list is in ascending
   order and shows 720x480 or 720x576 according to the frequency the card
-  is on. The other three are cycle gadgets: a click steps to the next
+  is on. From firmware 2026-10-28.01 it has fourteen formats: 640x480,
+  720x576/480, 800x600, 1024x768, 1280x720, 1280x800, 1280x960,
+  1280x1024, 1440x900, 1600x900, 1600x1200, 1680x1050, 1920x1080 and
+  1920x1200. One the card cannot clock (a VESA format on a card without
+  the clock for it) is refused and the row stays as it was. The other three are cycle gadgets: a click steps to the next
   value. Status Lines turns the two information lines at the top and
   bottom of the picture off and on; Menu Position moves the card's menu
   block through the centre and the four corners of the picture, so it can
@@ -191,6 +208,18 @@ Every setting the card has is on one of the pages, one gadget per setting.
 Settings that pick from a few values get a cycle gadget, Output Format a
 drop-down list, and settings that are numbers get `[-] value [+]`.
 
+**Gamma** (Settings, BBLink 1.28, firmware 2026-10-28.04) is a `[-] value [+]`
+row whose value is the bar the card draws on its menu, without the card's
+brackets (the box's edges are the ends): no blocks at the darkest step, five
+at 1.00 (`#####`, the default), ten at the brightest. `-` takes a block off
+and `+` adds one, and both stop at the end rather than going round. The
+eleven steps are 0.42, 0.50, 0.59, 0.71, 0.84, 1.00, 1.19, 1.41, 1.68, 2.00
+and 2.38, each the last times the fourth root of two: above 1.00 lightens
+the midtones of the Amiga picture, below 1.00 darkens them, and black and
+white stay where they are. The card's menu and status lines are not
+affected. On the card itself, press the button on the row to open it, then
+the up and down buttons; it is saved with the other settings.
+
 A setting the card has greyed out in the current output format is **ghosted**
 here too. A gadget you cannot click says the same thing as `N/A` and cannot
 be clicked by mistake.
@@ -208,6 +237,14 @@ live immediately and lost at the next power cycle unless you save it.
 **Display Info**, **Monitor Info** and **About** are the card's own pages,
 row for row. Each is a screen of its own with a **Go Back <<** at the bottom,
 so there is nothing else on screen while you are reading one.
+
+**Monitor Modes** (BBLink 1.26, firmware 2026-10-28.01) is the page under
+Monitor Info, as it is on the card: the **Monitor Modes >>** button beside
+Monitor Info's Go Back opens it, and its own **Go Back <<** returns to
+Monitor Info. It lists every output format the card makes and whether the
+monitor's EDID says it accepts it, at 50 Hz and at 60 Hz (`N/A` at 50 Hz
+for the computer formats, which EDID cannot answer). On the card, BTN1 on
+Monitor Info opens it and any button goes back.
 
 A page is read the moment you open it, and then re-read on the timer you set
 with **Refresh Rate** back on the main screen. Set that to `Off` and a page is
@@ -275,6 +312,7 @@ Status Lines = Shown
 Menu Position = Center
 Deinterlace = Adaptive
 ...
+Gamma = 1.00
 
 [Input PAL]
 Horizontal Position = 413
@@ -301,6 +339,10 @@ the window shows 512 on an interlaced screen), and `Horizontal Scale` the
 value on the 640-column grid (x2 where a Super-Hires screen shows x1). The
 report and the window show the screen's numbers. BBLink 1.23 or later is
 needed for a file with half-step scales: 1.22 wrote them as `Auto`.
+`Gamma` (BBLink 1.27) is written as its value, 0.42 to 2.38 since 1.28, and
+read back as one of the eleven to the hundredth (`1`, `2` and `0.5` will do
+for 1.00, 2.00 and 0.50); a file without it leaves the card's Gamma as it
+is.
 
 The words are the card's own: what a row shows on the monitor is what the
 file says. It is the **live** settings that are written, including anything
@@ -320,6 +362,15 @@ cycle until you do.
 This is also the way to carry settings across a firmware update that changes
 the record format: back up before, restore after, and the positions and
 sampling phases you spent an evening on are back without a button pressed.
+
+Firmware 2026-10-28.01 is such an update. Its record (version 14) has an
+output slot for each of the six new formats at each rate, so it is 354
+bytes and no longer fits the link's eight-bit address; BBLink 1.26 and
+BBSurvey 1.11 send the ninth address bit, and older tools cannot back it
+up or restore it. A record saved by an older firmware is still read at
+power-up: everything in it is kept, and the new formats start on their
+defaults. A file from an older BBLink restores into the new firmware as
+any older file does.
 
 ## OSD Colours
 
@@ -412,6 +463,12 @@ It changes nothing else: not the sampling phase, not the positions, not the
 capture height. Those are per-monitor settings the card already keeps and
 reloads by itself. This only says **which monitor**.
 
+BBMode 1.2 also knows BeamBender's own monitor drivers (the `Monitors`
+folder, from firmware 2026-10-28.01; before that the src-cust test firmware
+only): `BB-1024x768` pins the card on `CUSTOM24` and `BB-800x600`,
+`BB-1280x1024` and `BB-HD720p` on `CUSTOM15`, and from there the card picks
+each one's own set from its line and lines a field.
+
 ## In your startup
 
 ```
@@ -463,7 +520,13 @@ BBSurvey ALL             include the VGAONLY monitor and the HAM, EHB and
                          dual-playfield variants, which are the same timing
                          under another name
 BBSurvey QUIET           nothing on the console; the log says it all
+BBSurvey BBMODES         only the BB- monitors, each measured in full, to
+                         BBModes.log (1.8; field by field, 1.9; both
+                         fields of the 50 Hz modes, 1.10)
 ```
+
+BBSurvey 1.11 is for firmware 2026-10-28.01 and later: it keeps and puts
+back the 354-byte settings record of that firmware.
 
 What happens, in order. It reads the card's live settings and keeps a copy
 in memory and in `BBSurvey.settings` beside the log (a BBLink settings file,
@@ -521,6 +584,41 @@ Only the monitors whose drivers are in `DEVS:Monitors` are in the display
 database, so put the ones to be surveyed there first (PAL, NTSC, Euro36,
 Euro72, Super72, DblPAL, DblNTSC, Multiscan, A2024) and reboot. A mode the
 OS lists but cannot open is logged as `not available`.
+
+**BBMODES** is for tuning BeamBender's own monitor drivers (BB-800x600,
+BB-1024x768, BB-1280x1024, BB-HD720p; their README is beside the archive)
+and the card's settings for them. Run the drivers first (from `DEVS:Monitors`
+at boot, or by hand from a Shell). For each BB- mode it opens a screen of
+the size the name gives, with a display clip of exactly that size, paints
+marker rows and columns (top row white, second red, the last two white and
+red; first column white, second red, the last two red and white; blue
+inside), waits for the card to settle and writes a block to `BBModes.log`:
+
+- `amiga`: what graphics.library made of the driver (the DIMS rectangles in
+  pixels, the MNTR block, the MonitorSpec and its blanks and syncs), the
+  screen Intuition gave (view port, display clip, the View's offsets) and
+  the display window, fetch, bitplane and beam registers the copper list
+  actually loads;
+- `card`: the usual reading, the set used, its H and V position and its
+  capture size;
+- `probe`: the picture's edges as the card's line probe sees them, in
+  capture clocks after HSYNC and lines after VSYNC (the units of
+  Horizontal and Vertical Position): the first and last lit clock, how
+  many clocks a pixel is, and then each field on its own (1.9): its first
+  and last line and the colour of its top and bottom row (white for the
+  screen's even rows, red for its odd ones), told apart by the probe's
+  frame count, which steps once a field; then the H, V, Capture Width and
+  Capture Height that would frame the picture exactly. On firmware that
+  says which field it took each probed line for (src-cust 2026-10-27.70,
+  and every firmware from 2026-10-28.01; BBSurvey 1.11 knows it by the
+  link's protocol version, 5 and up),
+  a `weave` line says whether the card weaves the two fields the right way
+  round (RIGHT, WRONG WAY ROUND, or UNSTABLE when it changes its mind).
+  About ten seconds a mode; needs a firmware with the line probe. 1.10
+  polls the probe back to back: 1.9 waited `Delay(1)` between polls, so a
+  probe took 40 ms, two fields of BB-1024x768 or BB-800x600, and every
+  probe of a line landed in the same field for seconds at a time; one
+  field's top row and the other's bottom row went unseen.
 
 ---
 
@@ -641,12 +739,22 @@ BBLink's window. Start it once:
 
 ```
 Run >NIL: <NIL: BBKeyCon QUIET       from the startup-sequence
-BBKeyCon                             from a Shell, until Ctrl-C
+BBKeyCon                             from a Shell, until Ctrl-C or QUIT
 BBKeyCon MODS "lshift lcommand"      other modifier keys (default lshift lalt)
 BBKeyCon TEST                        the link stays closed: each key that
                                      matches is printed, nothing reaches the card
 BBKeyCon VERBOSE                     as normal, and every press is printed
+BBKeyCon QUIT                        stops the copy that is running
 ```
+
+**Stopping it.** `BBKeyCon QUIT` stops the running copy however it was
+started: from a Shell, with `Run`, or from its icon. Started again while a
+copy runs, BBKeyCon asks whether to stop that copy, in the Shell or, when
+started from its icon, in a requester; it never starts a second copy, and
+with `QUIET` it does not ask. Exchange's Remove works too. `Status` and
+`Break` only reach a copy started from a Shell or with `Run`: one started
+from its icon has no Shell number. (QUIT and the question need 1.3 on
+both sides; an older copy can only be removed in Exchange.)
 
 **Try `BBKeyCon TEST` first** on a machine it has not run on: it lists the
 nine key descriptions the OS accepted, then prints a line for every chord
@@ -713,10 +821,11 @@ of the shared lines.
 The card decides that, not the tool. A setting that does nothing in the
 current output format is greyed on the card's own menu too.
 
-**BBLink's title says a different version from the card.**
-The tool was built against different firmware. It still runs, but rebuild it
-against the firmware you are actually using before trusting a setting that
-moved between the two.
+**BBLink says the card's firmware differs from the tool.**
+The tool was built against a different firmware number (a variant's markers,
+such as `-c28`, do not count). It still runs, but rebuild it against the
+firmware you are actually using before trusting a setting that moved between
+the two.
 
 **Your settings came back as defaults after flashing.**
 The record the card saves has a format version, and when it changes the card
