@@ -45826,7 +45826,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "20K"
 			(at 339.09 234.95 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -45869,7 +45869,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C4184"
 			(at 339.09 234.95 90)
 			(hide yes)
 			(show_name no)
@@ -45880,7 +45880,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF2002T5E"
 			(at 339.09 234.95 90)
 			(hide yes)
 			(show_name no)
@@ -46950,10 +46950,10 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
+		(in_pos_files no)
+		(dnp yes)
 		(uuid "89e5a372-78f6-4a6d-b4d9-388f08a831a3")
 		(property "Reference" "R12"
 			(at 449.58 26.162 90)
@@ -51336,7 +51336,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "8K2"
 			(at 353.06 201.93 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -51379,7 +51379,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C25981"
 			(at 353.06 201.93 90)
 			(hide yes)
 			(show_name no)
@@ -51390,7 +51390,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF8201T5E"
 			(at 353.06 201.93 90)
 			(hide yes)
 			(show_name no)
@@ -51640,7 +51640,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "8K2"
 			(at 353.06 226.06 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -51683,7 +51683,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C25981"
 			(at 353.06 226.06 90)
 			(hide yes)
 			(show_name no)
@@ -51694,7 +51694,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF8201T5E"
 			(at 353.06 226.06 90)
 			(hide yes)
 			(show_name no)
@@ -57438,7 +57438,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "20K"
 			(at 339.09 210.82 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -57481,7 +57481,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C4184"
 			(at 339.09 210.82 90)
 			(hide yes)
 			(show_name no)
@@ -57492,7 +57492,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF2002T5E"
 			(at 339.09 210.82 90)
 			(hide yes)
 			(show_name no)

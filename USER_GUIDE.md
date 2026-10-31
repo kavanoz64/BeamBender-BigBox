@@ -1,6 +1,6 @@
 # BeamBender BigBox User Guide
 
-How to use the card from its three buttons and its on-screen menu. Written for firmware **2026-10-28.04**, the version in [Firmware/](Firmware/README.md). 2026-10-24.01 has the same menu without the six formats, Monitor Modes and the custom monitors added in 2026-10-28.01, and without Gamma (2026-10-28.03).
+How to use the card from its three buttons and its on-screen menu. Written for firmware **2026-10-30.03**, the version in [Firmware/](Firmware/README.md). 2026-10-28.04 has the same menu with Capture Width up to 724, the status lines shown, the menu at the top right and its background solid by default.
 
 - **Programming the card:** [Loading the firmware](Firmware/README.md), and [Programming](README.md#programming) on the main page for the JTAG header.
 - **From the Amiga:** everything here can also be done from AmigaOS with the [BBLink tools](BBLink/README.md). [BBKeyCon](BBLink/README.md#bbkeycon) puts the three buttons on the keyboard.
@@ -59,8 +59,8 @@ Every change is live at once, and is lost at power-off unless you [save it](#sav
 | Exit Menu | | closes the menu |
 | Output Format | 640x480, 720x480 / 720x576, 800x600, 1024x768, 1280x720, 1280x800, 1280x960, 1280x1024, 1440x900, 1600x900, 1600x1200, 1680x1050, 1920x1080, 1920x1200 | the HDMI resolution. SD reads 720x576 at 50 Hz and 720x480 at 60 Hz. The formats on offer depend on the module and the Si5351C ([table](README.md#firmware)). With no saved format the card starts on 1280x1024 where it can clock it, otherwise on 1920x1080. On the `-c28` firmware, choose 1920x1080 for the lock to the Amiga ([more](Firmware/README.md#standard-or--c28)). |
 | Output Frequency | **A-50Hz / A-60Hz**, F-50Hz, F-60Hz | A follows the Amiga and shows the rate in use; F is forced. MENU steps Auto, 50 Hz, 60 Hz. |
-| Status Lines | **Shown**, Hidden | the two lines of readings ([below](#border-and-status-lines)) |
-| Menu Position | Center, Top Left, **Top Right**, Bottom Left, Bottom Right | where the menu sits |
+| Status Lines | Shown, **Hidden** | the two lines of readings ([below](#border-and-status-lines)) |
+| Menu Position | Center, Top Left, Top Right, Bottom Left, **Bottom Right** | where the menu sits |
 | Display Info | page | what the card sees and does ([Pages](#pages)) |
 | Monitor Info | page | who the monitor is; MENU there opens Monitor Modes, the formats it says it accepts |
 | Input Sampling >> | submenu | how the Amiga's picture is captured |
@@ -84,7 +84,7 @@ These rows are kept per **settings set**: one for each monitor mode on each chip
 | Source Clock | 28M, 14Mx2, **7Mx4** | the clock the card samples with: 7 MHz times four, 14 MHz doubled, or the slot's 28 MHz clock itself (which has no fine phase) |
 | Horizontal Position | number | where capture starts on the Amiga's line |
 | Vertical Position | number | the first line captured (half lines on an interlaced screen) |
-| Capture Width | 320 to 724 | HiRes pixels captured per line, in steps of 4 |
+| Capture Width | 320 to 800 | the width captured, in the screen's own pixels (up to 1360 on a Super-Hires screen) |
 | Capture Height | from 180 | lines captured |
 | LoRes Capture | **Half**, Full | a LoRes screen stored one sample per pixel (so a 320-pixel screen reaches x6) or both. Acts on LoRes screens only. |
 
@@ -107,7 +107,7 @@ Auto picks the largest whole scale that fits and centers the picture. The half s
 
 | Row | Values (default **bold**) | What it does |
 |---|---|---|
-| Menu Background | 0%, 25%, 50%, 75%, **100%** | how solid the menu's background is |
+| Menu Background | 0%, 25%, **50%**, 75%, 100% | how solid the menu's background is |
 | Menu Size | x1 to x4, as the format allows | menu magnification, kept per output format |
 | Scanline Effect | **Off**, Light, Medium, Deep | dark lines between the Amiga's lines, at vertical scale x2 and up |
 | SHRes Downsampling | Sharp, **Soft** | Super-Hires on 720x576/480, 800x600 and 1024x768, too narrow for its 1280 samples: Sharp drops every other sample, Soft averages each pair |
@@ -140,7 +140,7 @@ Needs a still picture (Workbench is fine) and Source Clock on 7Mx4 or 14Mx2.
 
 ## Saving your settings
 
-**Save Settings** writes everything (every settings set, every format's geometry) to the module's flash, and the card reads it back at every power-up. **Load Settings** reads it back now. **Reset to Defaults** changes only the live settings. [BBLink](BBLink/README.md) can also back the settings up to a text file on the Amiga and restore them.
+**Save Settings** writes everything (every settings set, every format's geometry) to the module's flash, and the card reads it back at every power-up. **Load Settings** reads it back now. **Reset to Defaults** changes only the live settings. [BBLink](BBLink/README.md) can also back the settings up to a text file on the Amiga and restore them. Settings saved by firmware before 2026-10-28.05 are not read by later firmware: back them up with BBLink before updating ([how](Firmware/README.md#4-writing-the-firmware)).
 
 ## Border and status lines
 
@@ -153,7 +153,7 @@ While the status lines are shown, the screen has a colored border:
 | blue | no VSYNC |
 | gray | no RGB activity |
 
-The top status line is the capture and the output: position, phases, clock, sync, rate, output format, scale and capture size, ending in A, W or B (Adaptive, Weave, Bob) on an interlaced screen. The bottom line is the input: mode, field, line rate, lines, line length, RGB activity, Super-Hires pair counters and buffer underflow and overflow counts. Hide both with Status Lines, or by holding MENU with the menu closed.
+The top status line is the capture and the output: position, phases, clock, sync, rate, output format, scale and capture size, ending in A, W or B (Adaptive, Weave, Bob) on an interlaced screen. The bottom line is the input: mode, field, line rate, lines, line length, RGB activity, Super-Hires pair counters and buffer underflow and overflow counts. They are hidden by default: show or hide both with Status Lines, or by holding MENU with the menu closed.
 
 ## Rescue: back to defaults
 

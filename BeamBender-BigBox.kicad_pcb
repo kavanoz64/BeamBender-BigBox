@@ -169,7 +169,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "8K2"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "d15fa668-86c3-4538-ab26-43419f9cd1b3")
@@ -202,7 +202,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C25981"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -215,7 +215,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF8201T5E"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -3091,7 +3091,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "20K"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "cef3d362-04bf-402b-8570-2ab723659be1")
@@ -3124,7 +3124,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C4184"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -3137,7 +3137,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF2002T5E"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -3263,7 +3263,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "20K"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "283e9364-d816-4145-9471-36dd89e258f7")
@@ -3296,7 +3296,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C4184"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -3309,7 +3309,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF2002T5E"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -9420,7 +9420,7 @@
 				)
 			)
 		)
-		(property "Value" "10K"
+		(property "Value" "8K2"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "87b50785-94a7-4608-9067-b88cfea3c355")
@@ -9453,7 +9453,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25804"
+		(property "LCSC" "C25981"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -9466,7 +9466,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1002T5E"
+		(property "MPN" "0603WAF8201T5E"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -29152,7 +29152,7 @@
 				(pins "1" "2")
 			)
 		)
-		(attr smd)
+		(attr smd exclude_from_pos_files exclude_from_bom dnp)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -0.237258 -0.5225)

@@ -43,7 +43,7 @@ fp-info-cache
 #*.kicad_prl
 
 # JLCPCB extracted Gerber folder
-**/jlcpcb/gerber
+#**/jlcpcb/gerber
 
 # JLCPCB assembly files
-**/jlcpcb/production_files
+#**/jlcpcb/production_files

@@ -38,8 +38,8 @@ To remove a driver, delete it and its icon from `DEVS:Monitors` and restart.
 - Choose the output format of the same size for the 1:1 picture: 800x600,
   1024x768, 1280x1024 or 1280x720.
 - BBMode, from the BBLink tools, knows the four modes.
-- On ECS, BB-800x600 is High Res, for 16 colors rather than 4; the card
-  shows 724 of its 800 columns. `RES=SHRES` gives all 800 in 4 colors.
+- On ECS, BB-800x600 is High Res, for 16 colors rather than 4. `RES=SHRES`
+  makes it Super-High Res, in 4 colors.
 - The default picture position was measured on an A4000; on an ECS machine
   it may need a touch of Horizontal or Vertical Position (Input Sampling).
 

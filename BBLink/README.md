@@ -95,7 +95,7 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.28  2026-10-28.04 i9
+BBLink 1.30  2026-10-30.03 i9
 ```
 
 **That version is the CARD's**, read over the link. A card running a build
@@ -106,10 +106,10 @@ clock from the Amiga's), for example `2026-10-23.01-c28 i9`. Firmware before
 BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.28  for firmware 2026-10-28.04
-Oct 28 2026  13:00:00
+BBLink 1.30  for firmware 2026-10-30.03
+Oct 30 2026  22:44:00
 
-Card: 2026-10-28.04-c28 i9
+Card: 2026-10-30.03-c28 i9
 ```
 
 If those two firmware NUMBERS differ, the tool was built against tables from
@@ -236,7 +236,9 @@ live immediately and lost at the next power cycle unless you save it.
 
 **Display Info**, **Monitor Info** and **About** are the card's own pages,
 row for row. Each is a screen of its own with a **Go Back <<** at the bottom,
-so there is nothing else on screen while you are reading one.
+so there is nothing else on screen while you are reading one. As on the card,
+the values are in a color of their own: white, with the labels in the
+window's text color (BBLink 1.30).
 
 **Monitor Modes** (BBLink 1.26, firmware 2026-10-28.01) is the page under
 Monitor Info, as it is on the card: the **Monitor Modes >>** button beside
@@ -367,10 +369,15 @@ Firmware 2026-10-28.01 is such an update. Its record (version 14) has an
 output slot for each of the six new formats at each rate, so it is 354
 bytes and no longer fits the link's eight-bit address; BBLink 1.26 and
 BBSurvey 1.11 send the ninth address bit, and older tools cannot back it
-up or restore it. A record saved by an older firmware is still read at
-power-up: everything in it is kept, and the new formats start on their
-defaults. A file from an older BBLink restores into the new firmware as
-any older file does.
+up or restore it. A file from an older BBLink restores into the new firmware as any older
+file does.
+
+Firmware 2026-10-28.05 is another (record version 15, 355 bytes: the
+output slots in one run, smallest format first, and Gamma in a byte of its
+own). It reads no older record: after flashing it the card comes up on its
+defaults once, so back up with the old firmware and BBLink first and
+restore with BBLink 1.29 or later after. BBSurvey 1.12 keeps and puts back the
+355-byte record.
 
 ## OSD Colors
 
@@ -391,7 +398,8 @@ writes the card's flash, as Save Settings does; **Defaults** puts the
 built-in colors back in the list (FFD000, FFD000, B0B0B0, FFFFFF,
 000000, 000000) for the next Apply; **Cancel** closes the window. The
 colors are part of the settings record, so a backup carries them under
-`[OSD Colours]` and a restore puts them back. **Quit** in the same menu
+`[OSD Colors]` and a restore puts them back (a backup from BBLink 1.28 or
+earlier has `[OSD Colours]`, which still loads). **Quit** in the same menu
 closes the tool, as the window's close gadget does.
 
 ### From a Shell
@@ -525,8 +533,9 @@ BBSurvey BBMODES         only the BB- monitors, each measured in full, to
                          fields of the 50 Hz modes, 1.10)
 ```
 
-BBSurvey 1.11 is for firmware 2026-10-28.01 and later: it keeps and puts
-back the 354-byte settings record of that firmware.
+BBSurvey 1.12 is for firmware 2026-10-28.05 and later: it keeps and puts
+back the 355-byte settings record of that firmware (1.11, the 354-byte one
+of 28.01 to 28.04).
 
 What happens, in order. It reads the card's live settings and keeps a copy
 in memory and in `BBSurvey.settings` beside the log (a BBLink settings file,
