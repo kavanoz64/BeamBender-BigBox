@@ -207,7 +207,20 @@ What is still open:
 
 ### Next steps
 
-**Hardware.** Measure the rails. The next board revision carries the Si5351C on the board and folds the Amiga link's three jumpers in as traces; one FPGA pin (the former BLANK input) is free.
+**Hardware: revision 0.4**, in layout now, brings:
+
+- **An HDMI input for an RTG (ReTargetable Graphics) card.** An internal HDMI connector takes the output of an RTG card such as the Z3660, through an ADV7611 receiver into the FPGA, so one monitor cable serves both the Amiga's own screens and RTG. The RTG card's HDMI audio comes through as well. The RTG picture goes straight through, with no frame buffer, and the menu, the status lines and Gamma work on it as on the Amiga's; Gamma is set and saved for each source, as the two may need different curves.
+- **Automatic switching between the Amiga and RTG.** Aminet's `switchcontrol` tells the card over the parallel port's select line which screen is in front, and the card shows that one. The Video Source setting can also hold either picture. The sound follows the picture by default (Audio Source: Auto, Paula or HDMI Input). The Amiga capture keeps running behind RTG, so switching back is instant.
+- **The Si5351C clock generator on the board**, fed from the board's own 27 MHz oscillator, so every output format runs on both modules with no rework.
+- **The Amiga control link on the board.** The parallel port's data lines, PPOUT and PBUSY reach the FPGA through the board, so BBLink needs no wires, and the Amiga sends a whole byte per clock edge instead of a bit.
+- **An RP2354B microcontroller.** It runs the on-screen menu and composes everything shown over the picture: the menu, the status lines and the FlashFloppy display. That takes the work off the FPGA and leaves room on the i5 for the RTG input. It reads the card's buttons and the Amiga keyboard, so the menu can be worked from the keyboard, even in a game that boots straight from floppy.
+- **The Gotek's FlashFloppy display on screen.** A header takes the Gotek's display cable; the RP2354B answers it as FlashFloppy's display and shows the drive's text on screen, over either picture, so no display has to be fitted to the case.
+- **USB-C on the back plate**, beside the HDMI port, for firmware updates from a PC: the RP2354B programs the FPGA, so no JTAG programmer is needed. A PROG/RUN switch on the bracket puts the RP2354B into its USB bootloader. The card never draws power from USB.
+- **A connector for an optional Lisa tap board** on the Amiga 4000: a 40-way flat cable, the connector of Jörgen's [LISA_to_FPGA](https://github.com/jbilander/Lisa_to_FPGA) board, through which the RP2354B captures Lisa's register writes and passes them on to the FPGA.
+- **The Amiga audio level set by a jumper header** for the Amiga 4000 or for the 2000 and 3000, whose line outputs differ by about 5 dB. No soldering, as for every user setting.
+- **The audio master clock from its own 12.288 MHz oscillator**, straight to the ADC and the HDMI transmitter rather than through the FPGA.
+- **3.3 V from a 3 A switching regulator** (TPS563208) in place of the 1 A linear one, for the load of the new parts.
+- **Right-angle JTAG and button headers**, lying flat on the board.
 
 **Firmware.** Publishing the sources.
 
