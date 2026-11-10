@@ -1,11 +1,11 @@
 # BeamBender BigBox User Guide
 
-How to use the card from its three buttons and its on-screen menu. Written for firmware **2026-10-30.03**, the version in [Firmware/](Firmware/README.md). 2026-10-28.04 has the same menu with Capture Width up to 724, the status lines shown, the menu at the top right and its background solid by default.
+How to use the card from its three buttons and its on-screen menu. Written for firmware **2026-11-10.03**, the version in [Firmware/](Firmware/README.md). 2026-10-30.03, the release before it, has no Overscan row, calibrates in two passes and does not decode DCTV or HAM-E pictures.
 
 - **Programming the card:** [Loading the firmware](Firmware/README.md), and [Programming](README.md#programming) on the main page for the JTAG header.
 - **From the Amiga:** everything here can also be done from AmigaOS with the [BBLink tools](BBLink/README.md). [BBKeyCon](BBLink/README.md#bbkeycon) puts the three buttons on the keyboard.
 
-**Contents:** [Buttons](#the-buttons) · [Using the menu](#using-the-menu) · [Main menu](#main-menu) · [Input Sampling](#input-sampling) · [Output Geometry](#output-geometry) · [Settings](#settings) · [Pages](#pages) · [Calibrating](#calibrating-the-sampling) · [Saving](#saving-your-settings) · [Border and status lines](#border-and-status-lines) · [Rescue](#rescue-back-to-defaults)
+**Contents:** [Buttons](#the-buttons) · [Using the menu](#using-the-menu) · [Main menu](#main-menu) · [Input Sampling](#input-sampling) · [Output Geometry](#output-geometry) · [Settings](#settings) · [Pages](#pages) · [Calibrating](#calibrating-the-sampling) · [DCTV and HAM-E](#dctv-and-ham-e) · [Saving](#saving-your-settings) · [Border and status lines](#border-and-status-lines) · [Rescue](#rescue-back-to-defaults)
 
 ---
 
@@ -62,7 +62,7 @@ Every change is live at once, and is lost at power-off unless you [save it](#sav
 | Status Lines | Shown, **Hidden** | the two lines of readings ([below](#border-and-status-lines)) |
 | Menu Position | Center, Top Left, Top Right, Bottom Left, **Bottom Right** | where the menu sits |
 | Display Info | page | what the card sees and does ([Pages](#pages)) |
-| Monitor Info | page | who the monitor is; MENU there opens Monitor Modes, the formats it says it accepts |
+| Monitor Info | page | who the monitor is; MENU there opens Monitor Modes, the formats it says it accepts (the i9; on the i5 it says Not in build) |
 | Input Sampling >> | submenu | how the Amiga's picture is captured |
 | Output Geometry >> | submenu | where the picture sits on the monitor, and its scale |
 | Settings >> | submenu | the things you set once |
@@ -73,7 +73,7 @@ Every change is live at once, and is lost at power-off unless you [save it](#sav
 
 ## Input Sampling
 
-These rows are kept per **settings set**: one for each monitor mode on each chipset (ECS, AGA), PAL and NTSC apart. They always show the set of the screen on display, and a new screen mode on the Amiga brings up its own set.
+These rows are kept per **settings set**: one for each monitor mode on each chipset (ECS, AGA), PAL and NTSC apart. They always show the set of the screen on display, and a new screen mode on the Amiga brings up its own set. Source Clock, LoRes Capture and Overscan are the exceptions: one setting for every set.
 
 | Row | Values (default **bold**) | What it does |
 |---|---|---|
@@ -86,7 +86,8 @@ These rows are kept per **settings set**: one for each monitor mode on each chip
 | Vertical Position | number | the first line captured (half lines on an interlaced screen) |
 | Capture Width | 320 to 800 | the width captured, in the screen's own pixels (up to 1360 on a Super-Hires screen) |
 | Capture Height | from 180 | lines captured |
-| LoRes Capture | **Half**, Full | a LoRes screen stored one sample per pixel (so a 320-pixel screen reaches x6) or both. Acts on LoRes screens only. |
+| LoRes Capture | **Half**, Full | a LoRes screen stored one sample per pixel (so a 320-pixel screen reaches x6) or both. Acts on LoRes screens only, and is held at Full while a DCTV or HAM-E picture is decoded. |
+| Overscan | **Off**, Auto | Auto captures more of the picture than the window above, as much as the output has room for at the scale the window gets: the same on each side, and the scale never changes for it. Off captures exactly the window. |
 
 Position and Capture choose which part of the Amiga's picture is taken; Output Geometry moves where it lands on the monitor.
 
@@ -122,8 +123,8 @@ Auto picks the largest whole scale that fits and centers the picture. The half s
 
 Any button press on a page goes back to the menu. Holding DOWN on any page opens Si5351 Info.
 
-- **Display Info:** the hardware, the input status in words, field lines, capture size and clock, the settings set in use, the output, buffer counters and the link. The first page to look at when something is wrong.
-- **Monitor Info:** what the monitor reports over HDMI: maker, product and native resolution. MENU opens Monitor Modes; UP or DOWN goes back to the menu.
+- **Display Info:** the hardware, the input status in words, field lines, capture size and clock, the settings set in use, the output, buffer counters and the link. The first page to look at when something is wrong. Its Frame Rate row ends in DCTV, HAM-E Reg or HAM-E HAM while such a picture is decoded.
+- **Monitor Info:** what the monitor reports over HDMI: maker, product and native resolution. MENU opens Monitor Modes; UP or DOWN goes back to the menu. On the i5 the page says **Not in build**: to make room for DCTV and HAM-E, its firmware does not read what the monitor reports, and Monitor Modes reads N/A.
 - **Monitor Modes:** every output format, smallest first, and whether the monitor's EDID (Extended Display Identification Data, its description of itself) claims it at 50 and 60 Hz. Use it to see why a format will not show; a monitor may also show formats it does not list. Any button goes back to Monitor Info.
 - **Si5351 Info:** the clock generator, if fitted. Hold DOWN to reach it; it has no menu row.
 - **About:** credits, the project address, the firmware version and the module.
@@ -133,10 +134,20 @@ Any button press on a page goes back to the menu. Holding DOWN on any page opens
 Needs a still picture (Workbench is fine) and Source Clock on 7Mx4 or 14Mx2.
 
 1. Input Sampling >> Calibrate Sampling, press MENU.
-2. The status lines turn into the calibration page while the card sweeps the phase twice (COARSE, then FINE) and scores each step.
-3. It stops on SELECT with the best phase chosen. UP and DOWN pick another, applied live so you can see it.
+2. The status lines turn into the calibration page while the card sweeps the phase once (SWEEP): twenty points, 8 steps apart, each scored, in about six seconds.
+3. It stops on SELECT on the middle of the longest run of the best score, halfway between two points when the run is even (both are then yellow). UP and DOWN step to the next point up or down, applied live so you can see it.
 4. MENU accepts it; holding MENU cancels and puts the old phase back. The menu returns.
-5. Save Settings to keep it.
+5. Save Settings to keep it. Sampling Phase fine-tunes it a step at a time.
+
+## DCTV and HAM-E
+
+The card decodes DCTV and HAM-E pictures itself, with neither box fitted. There is nothing to switch on: show the picture with its own software and the card shows it in full color, field by field, and the plain screen again when the picture goes.
+
+- The screen's first line must be inside the capture window, or up to 24 lines above it. HAM-E also needs the screen's left edge in the window.
+- While DCTV is decoded the capture window widens by itself, keeping its center, as far as the output allows (800 pixels on 1920x1080).
+- LoRes Capture is held at Full meanwhile.
+- Display Info's Frame Rate row ends in DCTV, HAM-E Reg (the 256-color register mode) or HAM-E HAM.
+- Not on Super-Hires screens or A2024 monitors.
 
 ## Saving your settings
 

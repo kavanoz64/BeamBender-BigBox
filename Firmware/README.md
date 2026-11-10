@@ -18,6 +18,11 @@ i9 clocks the seven formats that need 40, 65, 108 or 162 MHz from its own
 PLLs, and the i5 offers the other seven: 640x480, 720x576 / 720x480,
 1280x720, 1280x800, 1680x1050, 1920x1080 and 1920x1200.
 
+The i5 files do not read the monitor's EDID (Extended Display
+Identification Data), so Monitor Info and Monitor Modes stay empty: the
+room went to decoding DCTV and HAM-E pictures. The i9 files have
+everything.
+
 ## Standard or -c28
 
 Both have the same menus and settings. They differ in where the clock for
@@ -145,7 +150,7 @@ writes need no power cycle.
 Into the module's flash - the card boots into it from then on:
 
 ```
-openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-10-30.03.bit
+openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-11-10.03.bit
 ```
 
 `--freq 10000000` runs the JTAG clock at 10 MHz, which an FT232H does

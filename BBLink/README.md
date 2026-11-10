@@ -95,7 +95,7 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.30  2026-10-30.03 i9
+BBLink 1.30  2026-11-10.03 i9
 ```
 
 **That version is the CARD's**, read over the link. A card running a build
@@ -106,10 +106,10 @@ clock from the Amiga's), for example `2026-10-23.01-c28 i9`. Firmware before
 BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.30  for firmware 2026-10-30.03
-Oct 30 2026  22:44:00
+BBLink 1.30  for firmware 2026-11-10.03
+Nov 10 2026  07:57:14
 
-Card: 2026-10-30.03-c28 i9
+Card: 2026-11-10.03-c28 i9
 ```
 
 If those two firmware NUMBERS differ, the tool was built against tables from
@@ -246,7 +246,9 @@ Monitor Info's Go Back opens it, and its own **Go Back <<** returns to
 Monitor Info. It lists every output format the card makes and whether the
 monitor's EDID says it accepts it, at 50 Hz and at 60 Hz (`N/A` at 50 Hz
 for the computer formats, which EDID cannot answer). On the card, BTN1 on
-Monitor Info opens it and any button goes back.
+Monitor Info opens it and any button goes back. An i5 running 2026-11-10.03
+or later does not read the EDID (the room went to DCTV and HAM-E): its
+Monitor Info says `Not in build` and Monitor Modes reads `N/A`.
 
 A page is read the moment you open it, and then re-read on the timer you set
 with **Refresh Rate** back on the main screen. Set that to `Off` and a page is
