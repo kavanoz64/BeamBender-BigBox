@@ -62,7 +62,7 @@ Every change is live at once, and is lost at power-off unless you [save it](#sav
 | Status Lines | Shown, **Hidden** | the two lines of readings ([below](#border-and-status-lines)) |
 | Menu Position | Center, Top Left, Top Right, Bottom Left, **Bottom Right** | where the menu sits |
 | Display Info | page | what the card sees and does ([Pages](#pages)) |
-| Monitor Info | page | who the monitor is; MENU there opens Monitor Modes, the formats it says it accepts (the i9; on the i5 it says Not in build) |
+| Monitor Info | page | who the monitor is; MENU there opens Monitor Modes, the formats it says it accepts |
 | Input Sampling >> | submenu | how the Amiga's picture is captured |
 | Output Geometry >> | submenu | where the picture sits on the monitor, and its scale |
 | Settings >> | submenu | the things you set once |
