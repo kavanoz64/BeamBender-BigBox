@@ -47,8 +47,8 @@ The **i5 (LFE5U-25F)** is the cheaper option, with its own bitstream. On its own
 
 **Board:** 157.5 x 90 mm, 4-layer, with dedicated ground and 3V3 planes.
 
-![PCB Top](Images/BeamBender-BigBox-Top-3D.png)
-![PCB Bottom](Images/BeamBender-BigBox-Bottom-3D.png)
+![PCB Top](Images/BeamBender-BigBox-Rev0.3-Top-3D.png)
+![PCB Bottom](Images/BeamBender-BigBox-Rev0.3-Bottom-3D.png)
 
 
 ### Where to buy the module
@@ -140,7 +140,7 @@ They need AmigaOS 3.0 or later, and AGA or both ECS chips (an ECS Agnus and the 
 
 **On-screen display.** A text menu on the card's three buttons sets all of the above, with Display Info, Monitor Info, Monitor Modes and Si5351 Info pages. Settings are saved to the module's flash. Firmware from 2026-10-28.05 on does not read settings saved by older firmware, so back them up with BBLink before updating from one.
 
-**Monitor Info** shows who the monitor is, from its EDID; **Monitor Modes** lists every output format and whether the monitor claims it at 50 and 60 Hz (one marked No may still work). The i5 leaves both out on Rev 0.3 boards due to limited logic space. It will be back on the Rev 0.4 board.
+**Monitor Info** shows who the monitor is, from its EDID; **Monitor Modes** lists every output format and whether the monitor claims it at 50 and 60 Hz (one marked No may still work).
 
 **Hot plug.** Replug the HDMI cable or swap the monitor, and the picture comes back on its own within about a second.
 
@@ -192,6 +192,10 @@ Still open:
 - **A connector for optional Lisa and Denise tap boards** on the A4000 (Jörgen's [LISA_to_FPGA](https://github.com/jbilander/Lisa_to_FPGA)), on the A2000 and A3000 ([Denise_to_FPGA](https://github.com/jbilander/Denise_to_FPGA)) which pass Lisa and Denise's register writes to the FPGA.
 - **The Amiga audio input chosen by a slide switch**: line or raw audio, for the A4000 or for the A2000 and A3000. No soldering, as for every user setting.
 - Smaller changes: the audio master clock from its own oscillator, a 3A switching regulator for 3.3V, and right-angle JTAG and button headers.
+
+![PCB Top](Images/BeamBender-BigBox-Rev0.4-Top-3D.png)
+![PCB Bottom](Images/BeamBender-BigBox-Rev0.4-Bottom-3D.png)
+
 
 **Firmware.** Publishing the sources.
 
