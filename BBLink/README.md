@@ -8,7 +8,7 @@ mouse and somewhere to read the numbers.
 | | what it is for |
 |---|---|
 | [**BBLink**](#bblink) | the window. Every setting, the live pages, the card's buttons, and your settings backed up to a file. This is the one you will use. |
-| [**BBMode**](#bbmode) | runs in the background and tells the card which monitor mode the Amiga just switched to. No longer needed - the card detects every mode by itself, reliably - but still here for anyone who wants the card told rather than left to measure. |
+| [**BBMode**](#bbmode) | retired with firmware 2026-11-12.01: the card names every monitor mode by itself and can no longer be told one. Take it out of your startup-sequence. |
 | [**BBSurvey**](#bbsurvey) | opens every screen mode the Amiga has, one after another, and logs what the card measures on each; `BBMODES` measures the BB monitors in full. |
 | [**BBProbe**](#bbprobe) | for when nothing answers. It prints the raw bytes on the wire and squares up one line at a time so a meter or a scope can find the break. It also reads raw lines of the picture. |
 | [**BBScreen**](#bbscreen) | opens one screen mode with a test pattern and runs a command in front of it. |
@@ -95,7 +95,7 @@ Double-click it, or run it from a Shell. A window opens on the default public
 screen with the card's firmware version in the title bar:
 
 ```
-BBLink 1.30  2026-11-10.03 i9
+BBLink 1.32  2026-11-12.01 i9
 ```
 
 **That version is the CARD's**, read over the link. A card running a build
@@ -106,10 +106,10 @@ clock from the Amiga's), for example `2026-10-23.01-c28 i9`. Firmware before
 BBLink...** in the Project menu (right mouse button):
 
 ```
-BBLink 1.30  for firmware 2026-11-10.03
-Nov 10 2026  07:57:14
+BBLink 1.32  for firmware 2026-11-12.01
+Nov 12 2026  11:38:33
 
-Card: 2026-11-10.03-c28 i9
+Card: 2026-11-12.01-c28 i9
 ```
 
 If those two firmware NUMBERS differ, the tool was built against tables from
@@ -246,9 +246,7 @@ Monitor Info's Go Back opens it, and its own **Go Back <<** returns to
 Monitor Info. It lists every output format the card makes and whether the
 monitor's EDID says it accepts it, at 50 Hz and at 60 Hz (`N/A` at 50 Hz
 for the computer formats, which EDID cannot answer). On the card, BTN1 on
-Monitor Info opens it and any button goes back. An i5 running 2026-11-10.03
-or later does not read the EDID (the room went to DCTV and HAM-E): its
-Monitor Info says `Not in build` and Monitor Modes reads `N/A`.
+Monitor Info opens it and any button goes back.
 
 A page is read the moment you open it, and then re-read on the timer you set
 with **Refresh Rate** back on the main screen. Set that to `Off` and a page is
@@ -436,79 +434,19 @@ ENDIF
 
 # BBMode
 
-**Run it from a Shell**, or put it in your `S:User-Startup`.
+Retired with firmware 2026-11-12.01, and no longer in `bblink.lha`.
 
-```
-BBMode              follow the front screen until Ctrl-C
-BBMode QUIET        the same, silently
-BBMode ONCE         set the card to match the screen now, then exit
-BBMode KEEP         do not put the card back on Auto on the way out
-BBMode DELAY=n      how often to look, in ticks (default 25, half a second)
-```
+BBMode told the card which monitor mode the Amiga had just opened, by
+pinning the card's **Input Mode**. The card names every monitor from the
+signal itself (the line length and the lines per field; the A2024 from its
+colors together with its ID line), so the pin was no longer needed, and a
+pin left behind, by a BBMode that was stopped or by a Save Settings while one
+was set, made the card treat every screen as that monitor. The firmware has
+no pin any more: Input Mode is a row that shows the monitor the card sees.
 
-It prints one line every time the screen mode changes and nothing at all in
-between:
-
-```
-PAL:High Res             -> PAL        ok
-DBLPAL:High Res Laced    -> DBLPAL     ok
-SUPER72:High Res         -> SUPER72    ok
-```
-
-`ok` means the card **read back** in that mode, not merely that a message was
-sent.
-
-## What it is for
-
-**You do not need it.** The card works out which monitor it is looking at
-from the line length and the lines per field, and the A2024 from its
-color signature, and it does so reliably for every mode the Amiga has;
-that is what **Auto** does, and Auto is the right setting. BBMode exists
-for the one thing a measurement cannot do: the Amiga chose the mode, so it
-knows which monitor it is about to produce before the first line is drawn,
-and BBMode passes that on, so the card need not wait the few frames the
-measurement takes to settle.
-
-It changes nothing else: not the sampling phase, not the positions, not the
-capture height. Those are per-monitor settings the card already keeps and
-reloads by itself. This only says **which monitor**.
-
-BBMode 1.2 also knows BeamBender's own monitor drivers (the `Monitors`
-folder, from firmware 2026-10-28.01; before that the src-cust test firmware
-only): `BB-1024x768` pins the card on `CUSTOM24` and `BB-800x600`,
-`BB-1280x1024` and `BB-HD720p` on `CUSTOM15`, and from there the card picks
-each one's own set from its line and lines a field.
-
-## In your startup
-
-```
-Run >NIL: <NIL: BBMode QUIET
-```
-
-`Break <task>` stops it, exactly as Ctrl-C does from a Shell. Started from
-Workbench it goes quiet by itself, since there is nowhere for it to print.
-
-## On the way out it puts the card back on Auto
-
-Unless you give it `KEEP`. A card left pinned by a program that is no longer
-running will sample the next 15 kHz mode with 29 kHz settings, and nobody ever
-connects that to something they stopped an hour ago.
-
-## If a mode prints "monitor not in the table"
-
-```
-FOO:Something            -> Auto       (monitor not in the table)
-```
-
-The card is left on Auto, which is exactly where it would have been without
-BBMode, so nothing is worse. Send that line on and the monitor can be added.
-BBMode matches on the monitor name, the part before the colon, and knows
-PAL, NTSC, EURO (36Hz and 72Hz told apart by the mode name), A2024 (PAL or
-NTSC by the standard the machine booted in), SUPER72, DBLPAL, DBLNTSC,
-MULTISCAN, VGA and PRODUCTIVITY (the last two as Multiscan). A plain mode
-with no monitor name follows the boot standard.
-
----
+If `BBMode` is in your startup-sequence, take the line out. An earlier
+BBMode run against firmware 2026-11-12.01 or later prints that Input Mode
+is not a cycle item and exits; it changes nothing.
 
 # BBSurvey
 
@@ -577,7 +515,8 @@ lit (an A2024 mode always reads `888899` because its four one-bit planes
 never light more, which is why A2024 screens are opened with all four
 whatever `DEPTH` says, falling back to fewer if the chip RAM will not take
 half a megabyte), the pair counters, under/over, the capture size the set
-gave, the clock and sync source, the set in use and the Input Mode setting.
+gave, the clock and sync source, the set in use and the Input Mode row (the
+set's name again since firmware 2026-11-12.01, which has no monitor pin).
 
 The header also records the tool's own version, the standard the Amiga
 booted in (the jumper, from graphics.library's DisplayFlags) and the
@@ -588,8 +527,7 @@ The output format is left alone: everything on the card's side of the line
 is measured on the input, and none of it depends on what the HDMI side is
 doing. The header of the log records the output format, the hardware and
 the LoRes Capture setting anyway. Nothing is changed on the card by the
-survey itself; if `BBMode` is running it goes on pinning the class, and the
-`MODE` column shows it.
+survey itself.
 
 Only the monitors whose drivers are in `DEVS:Monitors` are in the display
 database, so put the ones to be surveyed there first (PAL, NTSC, Euro36,
@@ -798,7 +736,7 @@ program's menu shortcut. `MODS` takes any two of `lshift`, `lalt` and
 `lcommand` (Left Amiga) if a program of yours wants the default pair.
 
 It holds the link open while it runs, which takes the parallel port only for
-the length of a frame, so BBLink and BBMode run beside it. A press that
+the length of a frame, so BBLink runs beside it. A press that
 seems to do nothing was a frame lost to the link; press again.
 
 Two guards, after version 1.0 took the whole input stream with it on the

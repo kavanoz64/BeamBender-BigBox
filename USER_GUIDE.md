@@ -1,6 +1,6 @@
 # BeamBender BigBox User Guide
 
-How to use the card from its three buttons and its on-screen menu. Written for firmware **2026-11-10.03**, the version in [Firmware/](Firmware/README.md). 2026-10-30.03, the release before it, has no Overscan row, calibrates in two passes and does not decode DCTV or HAM-E pictures.
+How to use the card from its three buttons and its on-screen menu. Written for firmware **2026-11-12.01**, the version in [Firmware/](Firmware/README.md). 2026-11-10.03, the release before it, lets you set Input Mode by hand and has no Monitor Info on the i5.
 
 - **Programming the card:** [Loading the firmware](Firmware/README.md), and [Programming](README.md#programming) on the main page for the JTAG header.
 - **From the Amiga:** everything here can also be done from AmigaOS with the [BBLink tools](BBLink/README.md). [BBKeyCon](BBLink/README.md#bbkeycon) puts the three buttons on the keyboard.
@@ -77,7 +77,7 @@ These rows are kept per **settings set**: one for each monitor mode on each chip
 
 | Row | Values (default **bold**) | What it does |
 |---|---|---|
-| Input Mode | PAL, NTSC, EURO36, A2024 PAL, A2024 NTSC, SUPER72, DBLPAL, DBLNTSC, EURO72, MULTISCAN, **Auto**, CUSTOM15, CUSTOM24 | Auto recognizes the monitor mode by itself. Pick one by hand to set a mode up without the card changing its mind, or if Auto gets it wrong. It also chooses which set the rows below edit. CUSTOM15 and CUSTOM24 are monitor drivers with timing of their own, on a 15 or 24 kHz line. The four BB- drivers ([BBLink/Monitors](BBLink/Monitors/README.md)) are recognized on Auto, CUSTOM15 or CUSTOM24, each with a set named after it. |
+| Input Mode | shown only | the settings set in use: the monitor mode the card recognized, by the name Display Info gives it (PAL, NTSC, EURO36, A2024 PAL, A2024 NTSC, SUPER72, DBLPAL, DBLNTSC, EURO72, MULTISCAN, CUSTOM15, CUSTOM24 or one of the BB- monitors). The rows below edit that set. The card names the mode by itself and cannot be told one, so the cursor skips this row. CUSTOM15 and CUSTOM24 are monitor drivers with timing of their own, on a 15 or 24 kHz line; the four BB- drivers ([BBLink/Monitors](BBLink/Monitors/README.md)) each have a set named after them. |
 | Calibrate Sampling | action | finds the best Sampling Phase ([how](#calibrating-the-sampling)) |
 | Sampling Phase | 0 to 159 | the fine sampling edge, 0.22 ns a step. N/A on 28M. |
 | Pixel Phase | a few steps | the coarse sampling edge: which capture clock in each pixel is used |
@@ -124,7 +124,7 @@ Auto picks the largest whole scale that fits and centers the picture. The half s
 Any button press on a page goes back to the menu. Holding DOWN on any page opens Si5351 Info.
 
 - **Display Info:** the hardware, the input status in words, field lines, capture size and clock, the settings set in use, the output, buffer counters and the link. The first page to look at when something is wrong. Its Frame Rate row ends in DCTV, HAM-E Reg or HAM-E HAM while such a picture is decoded.
-- **Monitor Info:** what the monitor reports over HDMI: maker, product and native resolution. MENU opens Monitor Modes; UP or DOWN goes back to the menu. On the i5 the page says **Not in build**: to make room for DCTV and HAM-E, its firmware does not read what the monitor reports, and Monitor Modes reads N/A.
+- **Monitor Info:** what the monitor reports over HDMI: maker, product and native resolution. MENU opens Monitor Modes; UP or DOWN goes back to the menu.
 - **Monitor Modes:** every output format, smallest first, and whether the monitor's EDID (Extended Display Identification Data, its description of itself) claims it at 50 and 60 Hz. Use it to see why a format will not show; a monitor may also show formats it does not list. Any button goes back to Monitor Info.
 - **Si5351 Info:** the clock generator, if fitted. Hold DOWN to reach it; it has no menu row.
 - **About:** credits, the project address, the firmware version and the module.

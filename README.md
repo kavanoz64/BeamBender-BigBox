@@ -146,7 +146,7 @@ They need AmigaOS 3.0 or later, and AGA or both ECS chips (an ECS Agnus and the 
 
 **Sampling calibration** finds the best capture phase against a still picture in about six seconds.
 
-**The Amiga control link** is three wires between test points already on the card, a full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) use it: `BBLink` (1.30) has every setting, the live pages and the card's buttons in a window, and backs the settings up to a text file and restores them; `BBMode` tells the card which monitor the Amiga switched to; `BBKeyCon` puts the card's buttons on the keyboard; `BBSurvey`, `BBProbe`, `BBScreen` and `BBLag` measure and diagnose. The wiring is in that README.
+**The Amiga control link** is three wires between test points already on the card, a full-duplex link to AmigaOS. The tools in [`BBLink/`](BBLink) use it: `BBLink` (1.32) has every setting, the live pages and the card's buttons in a window, and backs the settings up to a text file and restores them; `BBKeyCon` puts the card's buttons on the keyboard; `BBSurvey`, `BBProbe`, `BBScreen` and `BBLag` measure and diagnose. The wiring is in that README.
 
 **Latency**, measured with BBLag and a 240 fps camera: the HDMI picture is one to two fields (20 to 40 ms) behind an analog monitor's, the HDMI monitor's own processing included. One field of it is the frame buffer, by design.
 
@@ -170,7 +170,7 @@ Confirmed on hardware:
 - [x] Integer and blended half-step scaling, Overscan Auto, Pixel Smoothing, Gamma
 - [x] The BB- monitor drivers, woven and shown 1:1
 - [x] The on-screen menu, settings in flash, sampling calibration
-- [x] Monitor Info and Monitor Modes from the monitor's EDID (i9), hot plug
+- [x] Monitor Info and Monitor Modes from the monitor's EDID, hot plug
 - [x] The Amiga control link and the BBLink tools
 - [x] Latency: one to two fields to the HDMI monitor
 

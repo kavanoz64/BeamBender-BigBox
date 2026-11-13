@@ -18,11 +18,6 @@ i9 clocks the seven formats that need 40, 65, 108 or 162 MHz from its own
 PLLs, and the i5 offers the other seven: 640x480, 720x576 / 720x480,
 1280x720, 1280x800, 1680x1050, 1920x1080 and 1920x1200.
 
-The i5 files do not read the monitor's EDID (Extended Display
-Identification Data), so Monitor Info and Monitor Modes stay empty: the
-room went to decoding DCTV and HAM-E pictures. The i9 files have
-everything.
-
 ## Standard or -c28
 
 Both have the same menus and settings. They differ in where the clock for
@@ -150,7 +145,7 @@ writes need no power cycle.
 Into the module's flash - the card boots into it from then on:
 
 ```
-openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-11-10.03.bit
+openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-11-12.01.bit
 ```
 
 `--freq 10000000` runs the JTAG clock at 10 MHz, which an FT232H does
@@ -171,4 +166,111 @@ its defaults once. Back your settings up first with the BBLink tool (see the
 `BBLink` folder) and restore them afterwards - the backup is a readable text
 file. Back up with the BBLink made for the firmware on the card and restore
 with the one made for the new firmware (the one in `BBLink`); its About box
-names the firmware it was made for.
+names the firmware it was made for. The BBLink for an older firmware is in
+`BBLink/Older-BBLink-Files`.
+
+---
+
+## Firmware history
+
+Newest first, with the BBLink version made for each in parentheses. The
+earlier versions are in [`Older-Firmware`](Older-Firmware), and the BBLink
+tools made for each, from 2026-09-19.06 on, in
+[`BBLink/Older-BBLink-Files`](../BBLink/Older-BBLink-Files) as
+`BBLink_<version>.lha`.
+
+### 2026-11-12.01 (BBLink 1.32)
+
+- Monitor Info and Monitor Modes are back on the i5, beside DCTV, HAM-E and
+  Overscan Auto.
+- Input Mode shows the screen mode the card recognized and can no longer be
+  set; a mode pinned in saved settings is ignored. BBMode is retired: take it
+  out of the startup-sequence.
+- An A2024 is recognized by its ID line as well as its colors.
+- Overscan Auto keeps the line order on interlaced NTSC-based screens.
+- With Overscan Auto on, the scale rows offer what the capture window fits.
+- Load Settings no longer shows Busy and Saved on the Save row.
+
+### 2026-11-10.03 (BBLink 1.30)
+
+- DCTV and HAM-E pictures are decoded on the card, with neither box fitted.
+- Overscan Auto (Input Sampling) captures more of the picture around the
+  window, as much as fits at the scale in force.
+- Calibrate Sampling runs in one pass, about six seconds.
+- The MENU button no longer needs a long press on interlaced screens.
+- The i5 leaves out Monitor Info and Monitor Modes to make room.
+
+### 2026-10-30.03 (BBLink 1.30)
+
+- Settings saved by 2026-10-28.04 or earlier are not read (a new settings
+  format): back them up with BBLink before updating.
+- Capture Width goes up to 800, in the screen's own pixels (up to 1360 on
+  Super-Hires); BB-800x600 on ECS (Enhanced Chip Set) shows all 800 columns.
+- Display Info's Capture Clock and frame rates read steady.
+- New defaults: Status Lines Hidden, Menu Position Bottom Right, Menu
+  Background 50%.
+- The control link ignores short glitches on its lines.
+
+### 2026-10-28.04 (BBLink 1.28)
+
+- Fourteen output formats: 640x480, 1280x800, 1280x960, 1440x900, 1600x900
+  and 1680x1050 added.
+- The `-c28` files: 1920x1080 at 50 Hz locked to the Amiga's PAL frame.
+- Pixel Smoothing (Soft, Softer, Softest) and Gamma (0.42 to 2.38).
+- The Monitor Modes page: every output format and whether the monitor
+  claims it.
+- Monitor drivers with timing of their own are recognized as CUSTOM15 or
+  CUSTOM24, each with its own settings. The BB- monitor drivers show
+  800x600, 1024x768, 1280x1024 and 1280x720 Amiga screens 1:1.
+
+### 2026-09-30.07 (BBLink 1.23)
+
+- Si5351C clock generator support and an Si5351 Info page: with the
+  Si5351C, the i5 runs every output format. The `-si1` files are for a
+  board with only the Si5351C's CLK0 wired.
+- Horizontal and vertical scales set separately, Auto or forced, with
+  blended half steps from x1.5 to x5.5.
+- Super-Hires is drawn on its own samples, and the menu gives sizes in the
+  screen's own pixels and lines.
+- The menu's six colors and its background can be set.
+
+### 2026-09-22.03 (BBLink 1.19)
+
+- Motion-adaptive deinterlacing decides pixel by pixel: still text keeps
+  every line while the pointer moves. DblPAL interlaced included.
+- BBKeyCon: Left Shift + Left Alt + a key presses the card's buttons from any
+  screen.
+
+### 2026-09-20.04 (BBLink 1.18)
+
+- Hot plug: replug the cable or swap the monitor, and the picture comes back
+  on its own within about a second.
+
+### 2026-09-20.02 (BBLink 1.18)
+
+- Motion-adaptive deinterlacing on both modules, in blocks of 16 pixels.
+- BBLag, for measuring the delay to the monitor.
+
+### 2026-09-19.06 (BBLink 1.18)
+
+- Every Amiga monitor mode: Euro36, Euro72, Super72, DblPAL, DblNTSC and
+  Multiscan as well as PAL and NTSC. The card recognizes the mode and keeps a
+  settings set for each.
+- The A2024, 15 Hz and 10 Hz, PAL and NTSC, as the full 1024-line picture.
+- 1920x1200 on both modules and 1600x1200 on the i9; the output format is
+  chosen from a list.
+- Scale, capture width, bob deinterlacing and composite sync in the menu.
+- Works on the A4000T and the A2000, with OCS (Original Chip Set) and ECS.
+- The BBLink tools: BBLink (with settings backup and restore), BBMode,
+  BBSurvey, BBProbe and BBScreen.
+
+### 2026-09-14.12
+
+- The first release: 1920x1080, 1280x720 and 720x576 / 720x480 with audio on
+  both modules, plus 800x600, 1024x768 and 1280x1024 on the i9, at 50 or
+  60 Hz.
+- LoRes, HiRes and Super-Hires at full width, progressive and interlaced
+  (woven).
+- The on-screen menu, settings saved in the module's flash, Monitor Info and
+  sampling calibration.
+- Tested on the A4000D and the A3000.
