@@ -132,6 +132,7 @@ software above:
 ```
 openFPGALoader -c ft232 --unprotect-flash
 ```
+![openFPGALoader --unprotect-flash output](images/unprotect-flash.svg)
 
 $$
 \begin{array}{l}
@@ -161,14 +162,15 @@ Into the module's flash - the card boots into it from then on:
 ```
 openFPGALoader -c ft232 --freq 10000000 -f BeamBender-BigBox_i9_2026-11-12.01.bit
 ```
+![openFPGALoader good flash output](images/flash-write-good.svg)
+
+>[!WARNING]
+>If the output looks like this, unprotecting flash was not successful. Power-cycle the Amiga once, execute ```openFPGALoader -c ft232 --unprotect-flash``` one more time and try flashing again.
+![openFPGALoader bad flash output](images/flash-write-bad.svg)
 
 `--freq 10000000` runs the JTAG clock at 10 MHz, which an FT232H does
 comfortably over short wires and writes a bitstream in seconds.
 Use `-c ft2232` for an FT2232HL board, and the i5 file for an i5 module.
-
-If the write fails on a new module, the flash is still protected (section
-3); if it fails right after unlocking, power-cycle the card once and write
-again.
 
 A settings record the card has saved in its flash lives in a corner the
 firmware does not touch, so your positions and sampling phases survive a
