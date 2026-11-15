@@ -133,20 +133,6 @@ software above:
 openFPGALoader -c ft232 --unprotect-flash
 ```
 
-$$
-\begin{array}{l}
-\color{#D4A017}\texttt{Can't read iSerialNumber field from FTDI: considered as empty string} \\
-\color{#3B78FF}\texttt{Jtag frequency : requested 6.00MHz    -> real 6.00MHz} \\
-\color{#3B78FF}\texttt{Enable configuration: }\color{#28A745}\texttt{DONE} \\
-\color{#3B78FF}\texttt{SRAM erase: }\color{#28A745}\texttt{DONE} \\
-\color{#3B78FF}\texttt{JEDEC ID: 0xc84015} \\
-\color{#3B78FF}\texttt{Detected: GigaDevice GD25Q16C 32 sectors size: 16Mb} \\
-\color{#3B78FF}\texttt{unprotect\_flash:} \\
-\color{#28A745}\texttt{Done} \\
-\color{#3B78FF}\texttt{Refresh: }\color{#28A745}\texttt{DONE}
-\end{array}
-$$
-
 (`-c ft2232` for an FT2232HL board.) **This is done once.** The flash stays
 unprotected from then on, through every later programming.
 
